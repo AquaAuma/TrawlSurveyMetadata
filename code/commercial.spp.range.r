@@ -2,27 +2,26 @@ rm(list=ls())
 
 library(ggplot2)
 library(data.table)
-library(fishualize)
 library(rgdal)
 library(tidyverse)
 library(reshape2)
+library(egg)
+library(psych)
 
 ###########################
 #### 1. Load Aquamaps
 ###########################
 # Load FAO shp file
-fao <- readOGR(dsn = "C:/Users/auma/Downloads/FAO_AREAS",layer="FAO_AREAS")
+fao <- readOGR(dsn = "data/fao",layer="FAO_AREAS")
 
 # Load Aquamaps data
-setwd('C:/Users/auma/Documents/PhD DTU Aqua/(vii) BTS paper/AquamapsFAO/Aquamaps/')
-
 fao.zone <- c(21,27,31,34,37,41,47,51,57,61,67,71,77,81,87)
 
 dat.fao <- data.frame()
 for (i in 1:length(fao.zone)){
   dat <- data.frame()
   for (j in 1:3){
-    file1 <- read_csv(paste('spp',j,'.FAO',fao.zone[i],'.csv',sep=''))
+    file1 <- read_csv(paste('data/aquamaps/spp',j,'.FAO',fao.zone[i],'.csv',sep=''))
     file1 <- file1 %>% 
       mutate(Species=paste(Genus, Species, rep=' '),
              FAO=fao.zone[i])
@@ -53,7 +52,7 @@ dat.fao$Species <- substr(dat.fao$Species, start=1, stop=nchar(dat.fao$Species)-
 # Minimum probability:0.1
 dat.fao <- dat.fao %>% 
   select(-square, -Genus, -F_AREA) %>% 
-  filter(probability>=0.5)
+  filter(probability>=0.9)
 
 # Group species which are present on several FAO areas
 spp.multiple <- c('Gadus morhua','Melanogrammus aeglefinus','Mugil cephalus','Trichiurus lepturus','Thyrsites atun',
@@ -72,8 +71,7 @@ for (i in 1:length(spp.multiple)){
 }
 
 # Add species code ASFIS 3 letters
-setwd('~/PhD DTU Aqua/(vii) BTS paper/AquamapsFAO')
-codes <- read.csv("~/PhD DTU Aqua/(vii) BTS paper/AquamapsFAO/ASFIS_sp_2019.txt")
+codes <- read.csv("data/ASFIS_sp_2019.txt")
 codes <- codes %>% 
   select(X3A_CODE,Scientific_name) %>% 
   rename(ASFIS=X3A_CODE,
@@ -86,10 +84,9 @@ dat <- left_join(dat, codes, by='Species')
 
 
 ###########################
-#### 3. Convex hull
+#### 2. Convex hull
 ###########################
-setwd('C:/Users/auma/Documents/PhD DTU Aqua/(vii) BTS paper/AquamapsFAO/Metadata')
-bts <- readOGR(dsn = "Metadata_17042020.shp",layer="Metadata_17042020")
+bts <- readOGR(dsn = "data/metadata/Metadata_17042020.shp",layer="Metadata_17042020")
 
 # Merge convex hull with the FAO catch data
 dato <- dat
@@ -115,19 +112,13 @@ world <- map_data("world")
 codes$Species <- as.character(codes$Species)
 codes$ASFIS <- as.character(codes$ASFIS)
 codes <- codes[order(codes$Species),]
-#write.csv(codes, file='ASFISnames.csv')
 
-setwd('~/PhD DTU Aqua/(vii) BTS paper/AquamapsFAO/Maps')
-pdf(file = "SI.Appendix5.pdf")
+pdf(file = "figures/SI.Appendix5.pdf")
 for(i in 1:nrow(codes)){
   minlat <- min(dat[dat$Species==codes$Species[i],]$lat)
   maxlat <- max(dat[dat$Species==codes$Species[i],]$lat)
   minlong <- min(dat[dat$Species==codes$Species[i],]$long)
   maxlong <- max(dat[dat$Species==codes$Species[i],]$long)
-  
-  #png(filename = paste(codes$ASFIS[i], ".png", sep=''),
-      #width = 1000, height = 1000, units = "px", pointsize = 12,
-      #bg = "white",  res = NA)
   
   print(
     ggplot() + 
@@ -138,16 +129,15 @@ for(i in 1:nrow(codes)){
   geom_polygon(data=bts, aes(y=lat, x=long, group=group), fill=adjustcolor('black', alpha=0.5)) +
   ggtitle(paste(codes$Species[i],' (',codes$ASFIS[i],')',  sep=''))
   )
-  #dev.off()
   
   rm(minlat, maxlat, minlong, maxlong)
 }
 dev.off()
 
 
-###################################
-#### 4. Make figure 2 in manuscript
-###################################
+########################################
+#### 3. Integrate status of accessbility
+########################################
 #Per species
 dat$ASFIS <- as.character(dat$ASFIS)
 cov.sur <- table(as.character(dat$ASFIS), dat$Survey, useNA="ifany")
@@ -205,10 +195,9 @@ sorting <- cov %>%
 sorting <- sorting[order(sorting$Prop),]
 
 
-#####################
-# For threshold = 0.5
-#####################
-
+###############################
+# 4. Make figure2 in manuscript
+###############################
 ggnbr <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=NumberSurveys, fill=OA)) + geom_bar(stat="identity", color="black") +
   theme_bw() + scale_fill_manual(values=c('purple','black','red','orange','blue')) +
   theme(axis.text.x=element_text(color = "black", size=8, angle=90, vjust=0.5, hjust=0.8)) + 
@@ -217,9 +206,8 @@ ggnbr <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=NumberSurveys, fill=OA)) + 
         axis.title.x=element_text(size=20)) + coord_flip() + theme(axis.text.x = element_text(angle=0),
                                                                    panel.grid.major = element_blank(),
                                                                    panel.grid.minor = element_blank()) +
-  #scale_x_discrete(labels=rev(labels)) +
-  geom_vline(xintercept=9.5, lwd=2, lty=2) +
-  annotate("rect", xmin = 9.5, xmax = 35, ymin = 0, ymax = 60,alpha = .25) + scale_y_continuous(expand = c(0, 0))
+  geom_vline(xintercept=9.5, lwd=2, lty=2) + annotate("rect", xmin = 9.5, xmax = 35, ymin = 0, ymax = 60,alpha = .25) + 
+  scale_y_continuous(expand = c(0, 0))
 
 gghabitat <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=Prop, fill=OA)) + geom_bar(stat="identity", color="black") +
   theme_bw() + scale_fill_manual(labels=c('Available upon request','Incomplete metadata',
@@ -232,16 +220,13 @@ gghabitat <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=Prop, fill=OA)) + geom_
                                                axis.title=element_text(size=20), legend.text = element_text(size=20),
                                                panel.grid.major = element_blank(),
                                                panel.grid.minor = element_blank()) + 
-  labs(fill='') + coord_flip()+
-  theme(axis.text.x = element_text(angle=0)) +
-  #scale_x_discrete(labels=rev(labels)) +
+  labs(fill='') + coord_flip() + theme(axis.text.x = element_text(angle=0)) +
   geom_hline(yintercept=0.5, lwd=2, lty=2) + scale_y_continuous(expand = c(0, 0))
 
 
-library(egg)
-windows(60,40)
-egg::ggarrange(gghabitat, ggnbr, labels=c('',''), nrow=1, ncol=2)
-
+png(file='figures/figure2.png', height=800, width=1200)
+print(egg::ggarrange(gghabitat, ggnbr, labels=c('',''), nrow=1, ncol=2))
+dev.off()
 
 # stats for paper
 max(sorting$Prop)
@@ -255,13 +240,12 @@ min(cov.sum$NumberSurveys)
 max(cov.sum$NumberSurveys)
 mean(cov.sum$NumberSurveys)
 median(cov.sum$NumberSurveys)
-
-library(psych)
 geometric.mean(cov.sum$NumberSurveys)
 
-######################
-# For other thresholds
-######################
+
+#########################
+# 5. For other thresholds
+#########################
 ggnbr <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=NumberSurveys, fill=OA)) + geom_bar(stat="identity", color="black") +
   theme_bw() + scale_fill_manual(values=c('purple','black','red','orange','blue')) +
   theme(axis.text.x=element_text(color = "black", size=8, angle=90, vjust=0.5, hjust=0.8)) + 
@@ -270,7 +254,6 @@ ggnbr <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=NumberSurveys, fill=OA)) + 
         axis.title.x=element_text(size=20)) + coord_flip() + theme(axis.text.x = element_text(angle=0),
                                                                    panel.grid.major = element_blank(),
                                                                    panel.grid.minor = element_blank()) +
-  #scale_x_discrete(labels=rev(labels)) +
   scale_y_continuous(expand = c(0, 0))
 
 gghabitat <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=Prop, fill=OA)) + geom_bar(stat="identity", color="black") +
@@ -284,16 +267,13 @@ gghabitat <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=Prop, fill=OA)) + geom_
                                                 axis.title=element_text(size=20), legend.text = element_text(size=20),
                                                 panel.grid.major = element_blank(),
                                                 panel.grid.minor = element_blank()) + 
-  labs(fill='') + coord_flip()+
-  theme(axis.text.x = element_text(angle=0)) +
-  #scale_x_discrete(labels=rev(labels)) +
+  labs(fill='') + coord_flip()+ theme(axis.text.x = element_text(angle=0)) +
   geom_hline(yintercept=0.5, lwd=2, lty=2) + scale_y_continuous(expand = c(0, 0))
 
 
-library(egg)
-windows(60,40)
-egg::ggarrange(gghabitat, ggnbr, labels=c('',''), nrow=1, ncol=2)
-
+png(file='figures/appendix5.figure5.2.png', height=800, width=1200)
+print(egg::ggarrange(gghabitat, ggnbr, labels=c('',''), nrow=1, ncol=2))
+dev.off()
 
 # stats for paper
 max(sorting$Prop)
@@ -307,7 +287,5 @@ min(cov.sum$NumberSurveys)
 max(cov.sum$NumberSurveys)
 mean(cov.sum$NumberSurveys)
 median(cov.sum$NumberSurveys)
-
-library(psych)
 geometric.mean(cov.sum$NumberSurveys)
 
