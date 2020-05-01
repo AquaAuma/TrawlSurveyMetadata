@@ -10,6 +10,9 @@ library(reshape2)
 ###########################
 #### 1. Load Aquamaps
 ###########################
+# Load FAO shp file
+fao <- readOGR(dsn = "C:/Users/auma/Downloads/FAO_AREAS",layer="FAO_AREAS")
+
 # Load Aquamaps data
 setwd('C:/Users/auma/Documents/PhD DTU Aqua/(vii) BTS paper/AquamapsFAO/Aquamaps/')
 
