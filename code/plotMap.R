@@ -1,6 +1,8 @@
 # Script to create figure 1, 2 and 4 - map of the surveys
 # Last update 06.04.2020, by R. Frelat
 
+rm(list=ls())
+
 #0. Load package and data -----------------------
 # Load needed package
 library(rgdal)
@@ -29,14 +31,14 @@ makeTransparent <- function(..., alpha=0.5) {
 
 # Load shapefile
 # change the value corresponding to the last update 
-lastupdate <- "06042020"
+lastupdate <- "17042020"
 
 #make sure to select the latest shapefile
-shape<-readOGR(dsn=paste0("../Data/Metadata_", lastupdate, ".shp"), 
+shape<-readOGR(dsn=paste0("data/metadata/Metadata_", lastupdate, ".shp"), 
                layer=paste0("Metadata_", lastupdate))
 #Not sure why, but need st_read for dateline
-shape2<-st_read(paste0("../Data/Metadata_", lastupdate, ".shp"))
-meta <- read.csv(paste0("../Data/Metadata_", lastupdate, ".csv"), 
+shape2<-st_read(paste0("data/metadata/Metadata_", lastupdate, ".shp"))
+meta <- read.csv(paste0("data/metadata/Metadata_", lastupdate, ".csv"), 
                    check.names = FALSE)
 
 savepdf <- TRUE #else png format
@@ -78,10 +80,10 @@ shapeWT <- spTransform(shape, CRS("+proj=wintri"))
 worldWT <- spTransform(getMap(), CRS("+proj=wintri"))
 
 if (savepdf){
-  pdf(paste0("../Figures/Fig1A_WorldBTS_", lastupdate, ".pdf"), 
+  pdf(paste0("figures/figure1A_", lastupdate, ".pdf"), 
       width = 8, height = 6)
 } else {
-  png(paste0("../Figures/Fig1A_WorldBTS_", lastupdate, ".png"), 
+  png(paste0("figures/figure1A_", lastupdate, ".png"), 
       width = 8*ppi, height = 6*ppi, res=ppi)
 }
 
@@ -89,16 +91,18 @@ par(mar=c(0,0,0,0))
 plot(worldWT, col="grey80", border="grey40", lwd=0.2)
 plot(shapeWT, col=oa, border=NA, add=TRUE)
 plot(worldWT, col="grey80", add=TRUE, border="grey40", lwd=0.2)
+plot(worldWT[worldWT@data$SOVEREIGNT %in% c('Angola','Japan','Morocco','India','Argentina','Malaysia'),], 
+     col='grey40', border='grey40', add=TRUE, lwd=0.2)
 #legend(0, bbox(shapeWT)[2,1]*0.9, legend = names(colOA), cex=0.5,
 #       fill = unlist(colOA), bg="white")
 dev.off()
 
 #without open access status
 if (savepdf){
-  pdf(paste0("../Figures/WorldBTS_", lastupdate, ".pdf"), 
+  pdf(paste0("figures/WorldBTS_", lastupdate, ".pdf"), 
       width = 8, height = 6)
 } else {
-  png(paste0("../Figures/WorldBTS_", lastupdate, ".png"), 
+  png(paste0("figures/WorldBTS_", lastupdate, ".png"), 
       width = 8*ppi, height = 6*ppi, res=ppi)
 }
 par(mar=c(0,0,0,0))
@@ -128,10 +132,10 @@ lab <- c("Eur", "N.Am", "Asia", "Afr", "Ocea", "S.Am")
 Ooa<-rev(match(names(colOA), row.names(moaC)))
 
 if (savepdf){
-  pdf(paste0("../Figures/Fig1B_StationCont_", lastupdate, ".pdf"), 
+  pdf(paste0("figures/figure1BC_", lastupdate, ".pdf"), 
       width = 6, height = 6)
 } else {
-  png(paste0("../Figures/Fig1B_StationCont_", lastupdate, ".png"), 
+  png(paste0("figures/figure1BC_", lastupdate, ".png"), 
       width = 6*ppi, height = 6*ppi, res=ppi)
 }
 par(mfrow=c(2,1), las=1, mar=c(4,8,2,1))
@@ -151,10 +155,10 @@ dev.off()
 #Figure 2 : Regional zoom -----------------------
 #A. Europe
 if (savepdf){
-  pdf(paste0("../Figures/Fig2_EuropeBTS_", lastupdate, ".pdf"), 
+  pdf(paste0("figures/appendix4.figure4.4_", lastupdate, ".pdf"), 
       width = 4.5, height = 6)
 } else {
-  png(paste0("../Figures/Fig2_EuropeBTS_", lastupdate, ".png"), 
+  png(paste0("figures/appendix4.figure4.4_", lastupdate, ".png"), 
       width = 4.5*ppi, height = 6*ppi, res=ppi)
 }
 par(mar=c(0,0,0,0))
@@ -169,10 +173,10 @@ dev.off()
 
 #B. Mediterranean Sea
 if (savepdf){
-  pdf(paste0("../Figures/Fig2_MedBTS_", lastupdate, ".pdf"), 
+  pdf(paste0("figures/appendix4.figure4.2_", lastupdate, ".pdf"), 
       width = 6, height = 4.5)
 } else {
-  png(paste0("../Figures/Fig2_MedBTS_", lastupdate, ".png"), 
+  png(paste0("figures/appendix4.figure4.2_", lastupdate, ".png"), 
       width = 6*ppi, height = 4.5*ppi, res=ppi)
 }
 par(mar=c(0,0,0,0))
@@ -197,10 +201,10 @@ world360 <- st_geometry(st_as_sf(map("world", plot = FALSE, fill = TRUE, wrap=c(
 
 #C. Bering Sea
 if (savepdf){
-  pdf(paste0("../Figures/Fig2_BeringBTS_", lastupdate, ".pdf"), 
+  pdf(paste0("figures/appendix4.figure4.5_", lastupdate, ".pdf"), 
       width = 5, height = 6)
 } else {
-  png(paste0("../Figures/Fig2_BeringBTS_", lastupdate, ".png"), 
+  png(paste0("figures/appendix4.figure4.5_", lastupdate, ".png"), 
       width = 5*ppi, height = 6*ppi, res=ppi)
 }
 par(mar=c(3,3,1,1))
@@ -216,10 +220,10 @@ dev.off()
 
 #D. New Zealand
 if (savepdf){
-  pdf(paste0("../Figures/Fig2_NZBTS_", lastupdate, ".pdf"), 
+  pdf(paste0("figures/appendix4.figure4.3_", lastupdate, ".pdf"), 
       width = 6, height = 6)
 } else {
-  png(paste0("../Figures/Fig2_NZBTS_", lastupdate, ".png"), 
+  png(paste0("figures/appendix4.figure4.3_", lastupdate, ".png"), 
       width = 6*ppi, height = 6*ppi, res=ppi)
 }
 par(mar=c(3.5,3.5,1,1))
@@ -237,10 +241,10 @@ dev.off()
 
 #World across dateline
 if (savepdf){
-  pdf(paste0("../Figures/FigS1_PacificWorldBTS_", lastupdate, ".pdf"), 
+  pdf(paste0("figures/appendix4.figure4.1_", lastupdate, ".pdf"), 
       width = 9, height = 4.6)
 } else {
-  png(paste0("../Figures/FigS1_PacificWorldBTS_", lastupdate, ".png"), 
+  png(paste0("figures/appendix4.figure4.1_", lastupdate, ".png"), 
       width = 9*ppi, height = 4.6*ppi, res=ppi)
 }
 par(mar=c(3,3,0.5,0.5), yaxs="i", xaxs="i")
@@ -262,7 +266,7 @@ dev.off()
 
 
 # Figure 5 : Density plot -----------------------
-load("../Data/Arrowtooth_2020-03-18.RData")
+load("data/Arrowtooth_2020-03-18.RData")
 
 projargs_plot <- "+proj=utm +datum=WGS84 +units=km +zone=3"
 n_cells <-  125^2
@@ -279,10 +283,10 @@ shapeUTM$Survey <- as.factor(as.character(shapeUTM$Survey))
 colo <- rep("grey40", length(shapeUTM))
 
 if (savepdf){
-  pdf(paste0("../Figures/Fig5_Density_examples_", lastupdate, ".pdf"), 
+  pdf(paste0("figures/figure3_", lastupdate, ".pdf"), 
       width = 6, height = 8)
 } else {
-  png(paste0("../Figures/Fig5_Density_examples_", lastupdate, ".png"), 
+  png(paste0("figures/figure3_", lastupdate, ".png"), 
       width = 6*ppi, height = 8*ppi, res=ppi)
 }
 year_index = c(1,9,18)
