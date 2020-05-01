@@ -10,12 +10,6 @@ library(reshape2)
 ###########################
 #### 1. Load Aquamaps
 ###########################
-
-# Load FAO shp file
-fao <- readOGR(dsn = "C:/Users/auma/Downloads/FAO_AREAS",layer="FAO_AREAS")
-#fao_df <- broom::tidy(fao, region = "F_AREA")
-#lapply(fao_df, class)
-
 # Load Aquamaps data
 setwd('C:/Users/auma/Documents/PhD DTU Aqua/(vii) BTS paper/AquamapsFAO/Aquamaps/')
 
