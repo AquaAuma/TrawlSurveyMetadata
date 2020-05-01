@@ -8,42 +8,7 @@ library(tidyverse)
 library(reshape2)
 
 ###########################
-#### 1. Plot catch from FAO
-###########################
-setwd('C:/Users/auma/Documents/PhD DTU Aqua/(vii) BTS paper/AquamapsFAO')
-catch <- read.csv('FAO.catch.cleaned.csv')
-catch <- catch %>% 
-  filter(FAO_code>0)
-catch <- catch[order(catch$FAO_code),]
-catch$color <- rep(c('grey90','grey70','grey50','grey30'), times=12)
-catch <- catch %>% 
-  filter(!is.na(Species))
-catch$FAO_code <- as.factor(catch$FAO_code)
-catch$FAOspp <- paste(catch$FAO_code, catch$ScientificName, sep=' ')
-
-# only keep 3 spp per FAO area
-catch2 <- data.frame()
-fao.codes <- c('21','27','31','34','37','41','47','57','61','67','77','81')
-for (i in 1:length(fao.codes)){
-  sub.catch <- subset(catch, FAO_code==fao.codes[i])
-  if (i!='34'){sub.catch <- sub.catch[order(sub.catch$AvgNominalCatch),]
-  catch2 <- rbind(catch2, sub.catch[2:nrow(sub.catch),])}
-  if(i=='34'){catch2 <- rbind(catch2, sub.catch)}
-}
-
-windows(60,40)
-ggplot(catch, aes(x=FAO_code, y=AvgNominalCatch)) + geom_col(aes(fill=FAOspp), col='black') +
-  theme_bw() + coord_flip() + scale_y_log10() + xlab('FAO Fishing Area') + ylab('Log10(Average Catch)') +
-  scale_fill_manual(values=catch$color)+
-  scale_x_discrete(limits=c('21','27','31','34','37','41','47','57','61','67','77','81'), 
-                   labels=c('Northwest Atlantic','Northeast Atlantic','Western Central Atlantic','Eastern Central Atlantic',
-                            'Mediterranean and Black Sea','SouthWest Atlantic','Southeast Atlantic','Eastern Indian Ocean',
-                            'Northwest Pacific','Northeast Pacific','Eastern Central Pacific','Southwest Pacific')) +
-  theme(legend.position = '')
-
-
-###########################
-#### 2. Load Aquamaps
+#### 1. Load Aquamaps
 ###########################
 
 # Load FAO shp file
