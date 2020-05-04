@@ -1,7 +1,6 @@
 # Script to create figure 1, 2 and 4 - map of the surveys
 # Last update 06.04.2020, by R. Frelat
 
-
 #0. Load package and data -----------------------
 # Load needed package
 library(rgdal)
@@ -76,6 +75,11 @@ shapeWT <- spTransform(shape, CRS("+proj=wintri"))
 
 worldWT <- spTransform(getMap(), CRS("+proj=wintri"))
 
+#Set special color or shading for country with missing data
+missCountry <- c('Angola','Japan','Morocco','India','Argentina','Malaysia')
+colWT <- ifelse(worldWT$SOVEREIGNT%in%missCountry,"grey40", "grey90")
+denWT<-ifelse(worldWT$SOVEREIGNT%in%missCountry, 40, -1)
+
 if (savepdf){
   pdf(paste0("figures/figure1A_", lastupdate, ".pdf"), 
       width = 8, height = 6)
@@ -85,10 +89,32 @@ if (savepdf){
 }
 
 par(mar=c(0,0,0,0))
+plot(worldWT, col=colWT, border="grey40", lwd=0.2)
 plot(shapeWT, col=oa, border=NA, add=TRUE)
+plot(worldWT, col=colWT, add=TRUE, border="grey40", lwd=0.2)
 #legend(0, bbox(shapeWT)[2,1]*0.9, legend = names(colOA), cex=0.5,
 #       fill = unlist(colOA), bg="white")
 dev.off()
+
+
+if (savepdf){
+  pdf(paste0("figures/figure1Abis_", lastupdate, ".pdf"), 
+      width = 8, height = 6)
+} else {
+  png(paste0("figures/figure1Abis_", lastupdate, ".png"), 
+      width = 8*ppi, height = 6*ppi, res=ppi)
+}
+
+par(mar=c(0,0,0,0))
+colWT <- ifelse(worldWT$ADM0_A3%in%c("JPN", "IND", "MYS", "ARG"),"grey40", "grey90")
+denWT<-ifelse(worldWT$ADM0_A3%in%c("JPN", "IND", "MYS", "ARG"), 40, -1)
+plot(worldWT, col=colWT, border="grey40", lwd=0.2, density=denWT)
+plot(shapeWT, col=oa, border=NA, add=TRUE)
+plot(worldWT, col=colWT, add=TRUE, border="grey40", lwd=0.2, density=denWT)
+#legend(0, bbox(shapeWT)[2,1]*0.9, legend = names(colOA), cex=0.5,
+#       fill = unlist(colOA), bg="white")
+dev.off()
+
 
 #without open access status
 if (savepdf){
@@ -259,6 +285,7 @@ dev.off()
 
 
 # Figure 5 : Density plot -----------------------
+load("data/vast/Arrowtooth_2020-03-18.RData")
 
 projargs_plot <- "+proj=utm +datum=WGS84 +units=km +zone=3"
 n_cells <-  125^2
