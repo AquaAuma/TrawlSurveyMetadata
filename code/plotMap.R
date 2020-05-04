@@ -1,5 +1,5 @@
 # Script to create figure 1, 2 and 4 - map of the surveys
-# Last update 06.04.2020, by R. Frelat
+# Last update 04.05.2020, by R. Frelat
 
 #0. Load package and data -----------------------
 # Load needed package
@@ -40,10 +40,10 @@ meta <- read.csv(paste0("data/metadata/Metadata_", lastupdate, ".csv"),
 savepdf <- TRUE #else png format
 ppi <- 300 #only if savepdf = FALSE
 
-length(meta$Survey) #82 surveys
-sum(meta$nbHauls) #243966 hauls
+print(length(meta$Survey)) #91 surveys
+print(sum(meta$nbHauls)) #271188 hauls
 # tapply(meta$nbHauls, meta$Continent, sum)
-tapply(meta$nbHauls, meta$Opn_ccs, sum)/sum(meta$nbHauls)*100
+print(tapply(meta$nbHauls, meta$Opn_ccs, sum)/sum(meta$nbHauls)*100)
 #Figure 1 : Global coverage ---------------------
 # Set colors for Open Access status
 colOA <- list("Publicly available" = "blue",
@@ -106,13 +106,9 @@ if (savepdf){
 }
 
 par(mar=c(0,0,0,0))
-colWT <- ifelse(worldWT$ADM0_A3%in%c("JPN", "IND", "MYS", "ARG"),"grey40", "grey90")
-denWT<-ifelse(worldWT$ADM0_A3%in%c("JPN", "IND", "MYS", "ARG"), 40, -1)
 plot(worldWT, col=colWT, border="grey40", lwd=0.2, density=denWT)
 plot(shapeWT, col=oa, border=NA, add=TRUE)
 plot(worldWT, col=colWT, add=TRUE, border="grey40", lwd=0.2, density=denWT)
-#legend(0, bbox(shapeWT)[2,1]*0.9, legend = names(colOA), cex=0.5,
-#       fill = unlist(colOA), bg="white")
 dev.off()
 
 
@@ -210,9 +206,11 @@ map.axes()
 dev.off()
 
 # Across Dateline
-inc <- ! (shape2$minLong< 0 & shape2$maxLong> 0) | shape2$Survey%in%c("NZ Chatham Rise", "NZ-EEZ")
+inc <- ! (shape2$minLong< 0 & shape2$maxLong> 0) | shape2$Survey%in%c("NZ-CHAT")
 shapeDL <- subset(shape2, inc)
-
+# shape2$Survey[!shape2$Survey%in%shapeDL$Survey]
+# Removed 7 surveys that are across longitude 0
+# "NS-IBTS", "CGFS", "NOR-BTS", "AI", "ALG", "MEDITS-ESP", "GHA"    
 oaDL <- unlist(colOA[shapeDL$Opn_ccs])
 transoaDL <- makeTransparent(oaDL)
 shape360 <- (st_geometry(st_as_sf(shapeDL)) + c(360,90)) %% c(360) - c(0,90)
