@@ -12,7 +12,7 @@ options('stringsAsFactors'=FALSE)
 
 # Load shapefile
 # change the value corresponding to the last update 
-lastupdate <- "17032020"
+lastupdate <- "04052020"
 
 #make sure to select the latest shapefile
 shape<-readOGR(dsn=paste0("../Data/Metadata_", lastupdate, ".shp"), 
@@ -168,7 +168,7 @@ write.csv(tabSX, file = "../Figures/TabSX_CoverPerContinent.csv",
 #5. Cover of fishing ground -------------------------
 Fishing <- stack("../Data/TrawlFishing20132016_R04.tif")
 names(Fishing) <- c(2013:2016, "sum")
-plot(Fishing[[5]])
+#plot(Fishing[[5]])
 
 #Set fishing thresholds
 #plot(Fishing[[5]], breaks=c(0,1,4,10, 15000), col=c("white","green", "blue", "red"))

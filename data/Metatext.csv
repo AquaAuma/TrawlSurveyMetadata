@@ -1,0 +1,101 @@
+Survey;Continent;Region;First year of sampling;Contact;email;Contact2;email2;link;link2;Providr;Opn_ccs;Length
+ALG;Africa;Algeria;NA;Wahid Refes;wrefes@hotmail.com;;;NA;;NA;Incomplete metadata;Incomplete metadata
+GHA;Africa;Ghana;NA;Kofi Amador;kofi.amador@gmail.com;;;NA;;Marine Fisheries Research Division;Not publicly available;Not publicly available
+GIN;Africa;Guinea;NA;Mohamed Lamine Camara;mlcamara.kennedy@gmail.com;;;NA;;Centre National des Sciences Halieutiques de Boussoura (CNSHB);Not publicly available;Not publicly available
+MRT;Africa;Mauritania;NA;Oumar Kide;NA;;;https://doi.org/10.1371/journal.pone.0141566;;Mauritanian Institute of Oceanographic Research and Fisheries (IMROP);Partly publicly available;Only commercial species
+NAM;Africa;Namibia;NA;Johannes Nduvudi Kathena;john.kathena@mfmr.gov.na;;;NA;;National Marine Information and Research Centre (NatMIRC);Not publicly available;Not publicly available
+AGO-NANSEN;Africa;Nansen Angola;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+CIV-NANSEN;Africa;Nansen Democratic Rep. Congo;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+COD-NANSEN;Africa;Nansen Gabon;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+COG-NANSEN;Africa;Nansen Gambia;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+ESH-NANSEN;Africa;Nansen Ghana;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+GAB-NANSEN;Africa;Nansen Guinea-Bissau;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+GHA-NANSEN;Africa;Nansen Ivory Coast;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+GMB-NANSEN;Africa;Nansen Mauritania;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+GNB-NANSEN;Africa;Nansen Morocco;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+MAR-NANSEN;Africa;Nansen Republic of Congo;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+MRT-NANSEN;Africa;Nansen West Sahara;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+ZAF-NANSEN;Africa;Nansen South Africa;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+SEN-NANSEN;Africa;Nansen Senegal;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+NAM-NANSEN;Africa;Nansen Namibia;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+GIN-NANSEN;Africa;Nansen Guinea;NA;Ines Dias Bernardes;ines.dias.bernardes@hi.no;;;http://www.fao.org/in-action/eaf-nansen/en/;;FAO / Country representatives;Not publicly available;Not publicly available
+ZAF;Africa;South Africa;NA;Tracey Fairweathe;traceyf@daff.gov.za;;;NA;;Department of Agriculture, Forestry and Fisheries (DAFF);Available upon request;Available upon request
+SEN;Africa;Senegal;NA;Hamet Diaw Diadhiou;hamet_diadhiou@yahoo.fr;;;NA;; ISRA Centre de Recherche Oc?ographique Dakar-Thiaroye (CRODT);Not publicly available;Not publicly available
+TUN;Africa;Tunisia;NA;Tarek Hattab;Tarek.Hattab@ifremer.fr;;;NA;;Institut National des Sciences et Technologies de la Mer (INSTM);Incomplete metadata;Incomplete metadata
+CHN-YS;Asia;China, Yellow Sea;NA;Xiujuan Shan;shanxj@ysfri.ac.cn;;;https://doi.org/10.1007/s00343-018-6287-6;;Yellow Sea Fisheries Research Institute;Incomplete metadata;Incomplete metadata
+IS-MOAG;Asia;Israel, Israeli Ministry of Agriculture;NA;Yoni Belmaker;jonathan.belmaker@gmail.com;;;NA;;Tel Aviv University;Not publicly available;Not publicly available
+IS-NM;Asia;Israel, national monitoring;NA;Yoni Belmaker;jonathan.belmaker@gmail.com;;;NA;;Tel Aviv University;Not publicly available;Not publicly available
+IS-TAU;Asia;Israel, Tel Aviv University;NA;Yoni Belmaker;jonathan.belmaker@gmail.com;;;NA;;Tel Aviv University;Not publicly available;Not publicly available
+KOR;Asia;Korea;NA;Choi Junghwa;shrimpchoi@gmail.com;;;NA;;NA;Not publicly available;Not publicly available
+NWP;Asia;Russia, North Pacific Ocean;NA;Vladimir Kulik;NA;;;NA;;NA;Not publicly available;Not publicly available
+WBS;Asia;Russia, Western Bering Sea;NA;Vladimir Kulik;NA;;;NA;;NA;Not publicly available;Not publicly available
+BAS;Europe;Barents Sea, Norwegian data;1980;IMR;NA;;;http://metadata.nmdc.no/metadata-api/landingpage/15ce748250a85dda02e6e4362552f0b1;;IMR;Publicly available;Only commercial species
+BITS;Europe;Baltic Sea;1991;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Publicly available;Publicly available
+CGFS;Europe;English Channel;1991;IFREMER;NA;;;http://www.ifremer.fr/SIH-indices-campagnes/;;IFREMER;Publicly available;Publicly available
+EVHOE;Europe;Bay of Biscay;1988;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Publicly available;Publicly available
+FAR-IS;Europe;Faroe Islands;1997;Petur Steingrund;Peturs@hav.fo;;;NA;;Faroe Marine Research Institute (FAMRI);Incomplete metadata;Incomplete metadata
+GRL-DE;Europe;Greenland;1981;Heino Fock;heino.fock@thuenen.de;;;NA;;Thunen institute;Available upon request;Available upon request
+GRL-GHLE;Europe;Greenland;NA;Helle T. Christensen;htch@natur.gl;;;NA;;Greenland Institute of Natural Resources;Available upon request;Available upon request
+GRL-GHLW;Europe;Greenland;NA;Helle T. Christensen;htch@natur.gl;;;NA;;Greenland Institute of Natural Resources;Available upon request;Available upon request
+GRL-SFE;Europe;Greenland;NA;Helle T. Christensen;htch@natur.gl;;;NA;;Greenland Institute of Natural Resources;Available upon request;Available upon request
+GRL-SFW;Europe;Greenland;NA;Helle T. Christensen;htch@natur.gl;;;NA;;Greenland Institute of Natural Resources;Available upon request;Available upon request
+ICE-GFS;Europe;Iceland;1986;Jon Solmundsson;jon.solmundsson@hafogvatn.is;;;NA;;Hafrannsoknastofnun;Available upon request;Available upon request
+IE-IGFS;Europe;Irish Sea;2003;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Publicly available;Publicly available
+MEDITS-COR;Europe;Corsica;1994;IFREMER;NA;;;http://www.ifremer.fr/SIH-indices-campagnes/;;IFREMER;Publicly available;Only commercial species
+MEDITS-CYP;Europe;Croatia;1996;Georges Tserpes - international coordinator;gtserpes@hcmr.gr;;;https://www.sibm.it/MEDITS%202011/principalemedits.htm;;National providers;Available upon request;Available upon request
+MEDITS-ESP;Europe;Cyprus;2006;Georges Tserpes - international coordinator;gtserpes@hcmr.gr;;;https://www.sibm.it/MEDITS%202011/principalemedits.htm;;National providers;Available upon request;Available upon request
+MEDITS-GOL;Europe;Gulf of Lions;1994;IFREMER;NA;;;http://www.ifremer.fr/SIH-indices-campagnes/;;IFREMER;Publicly available;Only commercial species
+MEDITS-GRC;Europe;Greece;1994;Georges Tserpes - international coordinator;gtserpes@hcmr.gr;;;https://www.sibm.it/MEDITS%202011/principalemedits.htm;;National providers;Available upon request;Available upon request
+MEDITS-HRV;Europe;Italia;1994;Georges Tserpes - international coordinator;gtserpes@hcmr.gr;;;https://www.sibm.it/MEDITS%202011/principalemedits.htm;;National providers;Available upon request;Available upon request
+MEDITS-ITA;Europe;Malta;2000;Georges Tserpes - international coordinator;gtserpes@hcmr.gr;;;https://www.sibm.it/MEDITS%202011/principalemedits.htm;;National providers;Available upon request;Available upon request
+MEDITS-MLT;Europe;Slovenia;1996;Georges Tserpes - international coordinator;gtserpes@hcmr.gr;;;https://www.sibm.it/MEDITS%202011/principalemedits.htm;;National providers;Available upon request;Available upon request
+MEDITS-SVN;Europe;Spain;1994;Georges Tserpes - international coordinator;gtserpes@hcmr.gr;;;https://www.sibm.it/MEDITS%202011/principalemedits.htm;;National providers;Available upon request;Available upon request
+NIGFS;Europe;Northern Ireland;2005;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Publicly available;Publicly available
+NOR-BTS;Europe;Norwegian Sea;1980;IMR;NA;;;http://metadata.nmdc.no/metadata-api/landingpage/15ce748250a85dda02e6e4362552f0b1;;IMR;Publicly available;Only commercial species
+NS-IBTS;Europe;North Sea;1965;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Publicly available;Publicly available
+PT-IBTS;Europe;Portugal;2002;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Partly publicly available;Partly publicly available
+ROCKALL;Europe;Rockall Plateau;1999;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Publicly available;Publicly available
+SCOROC;Europe;Rockall Plateau;2011;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Publicly available;Publicly available
+SCOWCGFS;Europe;Scotland Shelf Sea;2011;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Publicly available;Publicly available
+SP-ARSA;Europe;Gulf of Cadiz;1996;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Partly publicly available;Partly publicly available
+SP-NORTH;Europe;North of Spain;1990;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Partly publicly available;Partly publicly available
+SP-PORC;Europe;Porcupine Survey (Scotland);2001;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Partly publicly available;Partly publicly available
+SWC-IBTS;Europe;Scotland Shelf Sea;1985;ICES;NA;;;http://datras.ices.dk/Data_products/;;ICES - DATRAS;Publicly available;Publicly available
+WBLS;Europe;Western Black Sea;NA;Elitsa Petrova;elitssa@yahoo.com;;;NA;;Institute of Fish Resources, Bulgaria;Not publicly available;Not publicly available
+AI;North America;Aleutian Islands;1983;National Oceanic and Atmospheric Administration (NOAA);NA;;;https://archive.fisheries.noaa.gov/afsc/RACE/groundfish/survey_data/data.htm;;National Oceanic and Atmospheric Administration (NOAA) Alaska Fisheries Science Center (AFSC) Resource Assessment and Conservation Engineering Division (RACE);Publicly available;Available upon request
+BSS;North America;Bering Sea Slope;2002;National Oceanic and Atmospheric Administration (NOAA);NA;;;https://archive.fisheries.noaa.gov/afsc/RACE/groundfish/survey_data/data.htm;;National Oceanic and Atmospheric Administration (NOAA) Alaska Fisheries Science Center (AFSC) Resource Assessment and Conservation Engineering Division (RACE);Publicly available;Available upon request
+DFO-HS;North America;Hecate Strait;2005;Department of Fisheries and Oceans (DFO);NA;;;https://open.canada.ca/data/dataset/;;Department of Fisheries and Oceans (DFO);Publicly available;Publicly available
+DFO-NF;North America;Newfoundland;1995;Mariano Koen-Alonso;Mariano.Koen-Alonso@dfo-mpo.gc.ca;;;NA;;Department of Fisheries and Oceans (DFO);Available upon request;Available upon request
+DFO-QCS;North America;Queen Charlotte;2003;Department of Fisheries and Oceans (DFO);NA;;;https://open.canada.ca/data/dataset/;;Department of Fisheries and Oceans (DFO);Publicly available;Publicly available
+DFO-WCHG;North America;West Coast Haida Gwaii;2006;Department of Fisheries and Oceans (DFO);NA;;;https://open.canada.ca/data/dataset/;;Department of Fisheries and Oceans (DFO);Publicly available;Publicly available
+DFO-WCVI;North America;West Coast Vancouver Island;2004;Department of Fisheries and Oceans (DFO);NA;;;https://open.canada.ca/data/dataset/;;Department of Fisheries and Oceans (DFO);Publicly available;Publicly available
+EBS;North America;Eastern Bering Sea;1982;National Oceanic and Atmospheric Administration (NOAA);NA;;;https://archive.fisheries.noaa.gov/afsc/RACE/groundfish/survey_data/data.htm;;National Oceanic and Atmospheric Administration (NOAA) Alaska Fisheries Science Center (AFSC) Resource Assessment and Conservation Engineering Division (RACE);Publicly available;Available upon request
+GOA;North America;Gulf of Alaska;1984;National Oceanic and Atmospheric Administration (NOAA);NA;;;https://archive.fisheries.noaa.gov/afsc/RACE/groundfish/survey_data/data.htm;;National Oceanic and Atmospheric Administration (NOAA) Alaska Fisheries Science Center (AFSC) Resource Assessment and Conservation Engineering Division (RACE);Publicly available;Available upon request
+GSL-N;North America;Gulf of St. Lawrence North;1990;Department of Fisheries and Oceans (DFO);NA;;;https://open.canada.ca/data/dataset/;;Department of Fisheries and Oceans (DFO);Partly publicly available;Available upon request
+GSL-S;North America;Gulf of St. Lawrence South;1971;Department of Fisheries and Oceans (DFO);NA;;;https://open.canada.ca/data/dataset/;;Department of Fisheries and Oceans (DFO);Partly publicly available;Available upon request
+Gulf of Mexico;North America;Gulf of Mexico;1982;Ocean Adapt;NA;;;https://oceanadapt.rutgers.edu/;;NOAA - Ocean Adapt;Publicly available;Available upon request
+LEJANAS-3L;North America;Flemish Cap;NA;Esther Rom√°n;esther.roman@ieo.es;;;NA;;IEO Fisheries Department;Not publicly available;Not publicly available
+LEJANAS-FLEM;North America;Newfoundland NAFO area 3L;NA;Esther Rom√°n;esther.roman@ieo.es;;;NA;;IEO Fisheries Department;Not publicly available;Not publicly available
+NBS;North America;Northern Bering Sea;1982;National Oceanic and Atmospheric Administration (NOAA);NA;;;https://archive.fisheries.noaa.gov/afsc/RACE/groundfish/survey_data/data.htm;;National Oceanic and Atmospheric Administration (NOAA) Alaska Fisheries Science Center (AFSC) Resource Assessment and Conservation Engineering Division (RACE);Publicly available;Available upon request
+Northeast US;North America;Northeast US;1963;Ocean Adapt;NA;;;https://oceanadapt.rutgers.edu/;;NOAA - Ocean Adapt;Publicly available;Available upon request
+Scotian Shelf;North America;Scotian Shelf;1970;Ocean Adapt;NA;;;https://oceanadapt.rutgers.edu/;;NOAA - Ocean Adapt;Publicly available;Available upon request
+Southeast US;North America;Southeast US;1989;Ocean Adapt;NA;;;https://oceanadapt.rutgers.edu/;;NOAA - Ocean Adapt;Publicly available;Available upon request
+WCANN;North America;West Coast Annual;2003;National Oceanic and Atmospheric Administration (NOAA);NA;;;https://oceanadapt.rutgers.edu/;;National Oceanic and Atmospheric Administration (NOAA) Northwest Fisheries Science Center (NWFSC);Publicly available;Available upon request
+AUS-GABTS;Oceania;Great Australian Bight Trawl Sector;NA;Matt Koopman;mmatt@fishwell.com.au;;;NA;;Fishwell Consultings;Not publicly available;Not publicly available
+AUS-SESSF;Oceania;Southern and Eastern Australia;NA;Matt Koopman;mmatt@fishwell.com.au;;;NA;;Fishwell Consultings;Not publicly available;Not publicly available
+NZ-CHAT;Oceania;New Zealand Chatham Rise;1992;Richard O'Driscoll;richard.odriscoll@niwa.co.nz;;;https://nzobisipt.niwa.co.nz/resource.do?r=trawl;;NIWA - NZ Ministry for Primary Industries;Partly publicly available;Available upon request
+NZ-SA;Oceania;New Zealand Sub-Antarctic;1991;Richard O'Driscoll;richard.odriscoll@niwa.co.nz;;;https://nzobisipt.niwa.co.nz/resource.do?r=trawl;;NIWA - NZ Ministry for Primary Industries;Partly publicly available;Available upon request
+NZ-ECSI;Oceania;New Zealand east coast South Island;1991;Richard O'Driscoll;richard.odriscoll@niwa.co.nz;;;https://nzobisipt.niwa.co.nz/resource.do?r=trawl;;NIWA - NZ Ministry for Primary Industries;Partly publicly available;Available upon request
+NZ-WCSI;Oceania;New Zealand west coast South Island;1992;Richard O'Driscoll;richard.odriscoll@niwa.co.nz;;;https://nzobisipt.niwa.co.nz/resource.do?r=trawl;;NIWA - NZ Ministry for Primary Industries;Partly publicly available;Available upon request
+CHL;South America;Chile;NA;Daniela Yepsen;daniela.yepsen@gmail.com;;;NA;;University of Concepcion;Available upon request;Available upon request
+COL;South America;Colombian Caribbean;NA;Camilo Bernardo Garcia Ramirez;cbgarciar@unal.edu.co;;;NA;;Universidad Nacional de Colombia;Not publicly available;Not publicly available
+FLK;South America;Falkland Islands;NA;Alexander Arkhipkin;AArkhipkin@fisheries.gov.fk;;;NA;;Falkland Islands Government Fisheries Department;Not publicly available;Not publicly available
+PER;South America;Peru;NA;Jacqueline Palacios Le√≥n;jpalacios@imarpe.gob.pe;;;NA;;Instituto del Mar del Per√∫ (IMARPE);Not publicly available;Not publicly available
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;
+;;;;;;;;;;;;

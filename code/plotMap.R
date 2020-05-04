@@ -1,7 +1,6 @@
 # Script to create figure 1, 2 and 4 - map of the surveys
 # Last update 06.04.2020, by R. Frelat
 
-rm(list=ls())
 
 #0. Load package and data -----------------------
 # Load needed package
@@ -27,11 +26,9 @@ makeTransparent <- function(..., alpha=0.5) {
   return(newColor)
 }
 
-
-
 # Load shapefile
 # change the value corresponding to the last update 
-lastupdate <- "17042020"
+lastupdate <- "04052020"
 
 #make sure to select the latest shapefile
 shape<-readOGR(dsn=paste0("data/metadata/Metadata_", lastupdate, ".shp"), 
@@ -88,11 +85,7 @@ if (savepdf){
 }
 
 par(mar=c(0,0,0,0))
-plot(worldWT, col="grey80", border="grey40", lwd=0.2)
 plot(shapeWT, col=oa, border=NA, add=TRUE)
-plot(worldWT, col="grey80", add=TRUE, border="grey40", lwd=0.2)
-plot(worldWT[worldWT@data$SOVEREIGNT %in% c('Angola','Japan','Morocco','India','Argentina','Malaysia'),], 
-     col='grey40', border='grey40', add=TRUE, lwd=0.2)
 #legend(0, bbox(shapeWT)[2,1]*0.9, legend = names(colOA), cex=0.5,
 #       fill = unlist(colOA), bg="white")
 dev.off()
@@ -266,7 +259,6 @@ dev.off()
 
 
 # Figure 5 : Density plot -----------------------
-load("data/Arrowtooth_2020-03-18.RData")
 
 projargs_plot <- "+proj=utm +datum=WGS84 +units=km +zone=3"
 n_cells <-  125^2
