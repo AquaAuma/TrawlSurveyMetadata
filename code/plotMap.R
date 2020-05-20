@@ -25,6 +25,8 @@ makeTransparent <- function(..., alpha=0.5) {
   return(newColor)
 }
 
+
+
 # Load shapefile
 # change the value corresponding to the last update 
 lastupdate <- "20052020"
@@ -280,6 +282,100 @@ legend("bottomleft", legend = names(colOA), cex=0.5,
        fill = unlist(colOA), bg="white")
 dev.off()
 
+# North Pole view
+inc <- (shape$minLat>30 & shape$maxLat> 30)
+shapeN <- subset(shape, inc)
+xlim <-  c(-180,200)
+ylim <-  c(30,90)
+m <- map("world", xlim=xlim , ylim=ylim, plot = FALSE, 
+         fill = TRUE, lforce ="e")
+IDs <- sapply(strsplit(m$names, ":"), function(x) x[1])
+worldN <- maptools::map2SpatialPolygons(m, IDs=IDs, proj4string = CRS(proj4string(shape)))
+
+proj <- "+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +a=6378273 +b=6356889.449 +units=m +no_defs"
+worldNview <- spTransform(worldN, CRSobj = CRS(proj))
+shapeNview <- spTransform(shapeN, CRSobj = CRS(proj))
+
+oaN <- unlist(colOA[shapeNview$Opn_ccs])
+transoaN <- makeTransparent(oaN)
+
+# Ploting details from https://khufkens.com/2017/01/18/r-polar-plots/
+pts <- SpatialPoints(rbind(c(-180,30),c(0,30),c(180,85),c(180,85)), 
+                     CRS(proj4string(shape)))#CRS("+init=epsg:4326"))
+gl <-  gridlines(pts, easts = seq(-180,180,30), 
+                 norths = seq(30,85,10), ndiscr = 100)
+gl.polar <-  spTransform(gl, proj)
+ll = SpatialLines(list(Lines(Line(cbind(seq(-180,180,0.5),rep(30,721))), ID="outer")), CRS("+init=epsg:4326"))
+ll.polar <- spTransform(ll, proj)
+# l1 = labels(gl.polar, proj4string(shape), side = 1)
+# l1$pos = NULL
+# l2 = labels(gl.polar, proj4string(shape), side = 2)
+# l2$srt = 0
+# l2$pos = NULL
+
+if (savepdf){
+  pdf(paste0("figures/appendix4.figure4.6_", lastupdate, ".pdf"), 
+      width = 5, height = 4.6)
+} else {
+  png(paste0("figures/appendix4.figure4.6_", lastupdate, ".png"), 
+      width = 9*ppi, height = 4.6*ppi, res=ppi)
+}
+par(mar=c(3,3,0.5,0.5), yaxs="i", xaxs="i")
+plot(worldNview, col="grey80", border="grey40", lwd=0.2)
+lines(gl.polar, add = TRUE, lwd=0.2, lty=2, xpd=NA)
+lines(ll.polar, lwd = 3, lty = 1, xpd=NA)
+plot(shapeNview, col=oaN, border=NA, add=TRUE)
+# text(l1, cex = 1, adj = c( 0.5, 2 ),  col = "black")
+# text(l2, cex = 1, adj = c( 0.5, 2 ),  col = "black")
+dev.off()
+
+# South Pole view
+inc <- (shape$minLat< -30 & shape$maxLat< -30)
+shapeS <- subset(shape, inc)
+xlim <-  c(-180,200)
+ylim <-  c(-90,-30)
+m <- map("world", xlim=xlim , ylim=ylim, plot = FALSE, 
+         fill = TRUE, lforce = "e")
+IDs <- sapply(strsplit(m$names, ":"), function(x) x[1])
+worldS <- maptools::map2SpatialPolygons(m, IDs=IDs, proj4string = CRS(proj4string(shape)))
+
+proj <- "+proj=stere +lat_0=-90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +a=6378273 +b=6356889.449 +units=m +no_defs"
+worldSview <- spTransform(worldS, CRSobj = CRS(proj))
+shapeSview <- spTransform(shapeS, CRSobj = CRS(proj))
+
+oaS <- unlist(colOA[shapeSview$Opn_ccs])
+transoaS <- makeTransparent(oaS)
+
+# Ploting details from https://khufkens.com/2017/01/18/r-polar-plots/
+pts <- SpatialPoints(rbind(c(-180,-85),c(0,-85),c(180,-30),c(180,-30)), 
+                     CRS(proj4string(shape)))
+gl <-  gridlines(pts, easts = seq(-180,180,30), 
+                 norths = seq(-90,35,10), ndiscr = 100)
+gl.polar <-  spTransform(gl, proj)
+ll = SpatialLines(list(Lines(Line(cbind(seq(-180,180,0.5),rep(-30,721))), ID="outer")), CRS("+init=epsg:4326"))
+ll.polar <- spTransform(ll, proj)
+
+# l1 = labels(gl.polar, proj4string(shape), side = 1)
+# l1$pos = NULL
+# l2 = labels(gl.polar, proj4string(shape), side = 2)
+# l2$srt = 0
+# l2$pos = NULL
+
+#Polar
+if (savepdf){
+  pdf(paste0("figures/appendix4.figure4.7_", lastupdate, ".pdf"), 
+      width = 5, height = 4.6)
+} else {
+  png(paste0("figures/appendix4.figure4.7_", lastupdate, ".png"), 
+      width = 9*ppi, height = 4.6*ppi, res=ppi)
+}
+par(mar=c(3,3,0.5,0.5), yaxs="i", xaxs="i")
+plot(worldSview, col="grey80", border="grey40", lwd=0.2)
+lines(gl.polar, add = TRUE, lwd=0.2, lty=2, xpd=NA)
+lines(ll.polar, lwd = 3, lty = 1, xpd=NA)
+plot(shapeSview, col=oaS, border=NA, add=TRUE)
+
+dev.off()
 
 # Figure 5 : Density plot -----------------------
 load("data/vast/Arrowtooth_2020-03-18.RData")
