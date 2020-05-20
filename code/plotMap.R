@@ -27,7 +27,7 @@ makeTransparent <- function(..., alpha=0.5) {
 
 # Load shapefile
 # change the value corresponding to the last update 
-lastupdate <- "04052020"
+lastupdate <- "20052020"
 
 #make sure to select the latest shapefile
 shape<-readOGR(dsn=paste0("data/metadata/Metadata_", lastupdate, ".shp"), 
@@ -76,7 +76,7 @@ shapeWT <- spTransform(shape, CRS("+proj=wintri"))
 worldWT <- spTransform(getMap(), CRS("+proj=wintri"))
 
 #Set special color or shading for country with missing data
-missCountry <- c('Angola','Japan','Morocco','India','Argentina','Malaysia')
+missCountry <- c('Angola','Japan','India','Argentina','Malaysia')
 colWT <- ifelse(worldWT$SOVEREIGNT%in%missCountry,"grey40", "grey90")
 denWT<-ifelse(worldWT$SOVEREIGNT%in%missCountry, 40, -1)
 
@@ -279,7 +279,6 @@ axis(2)
 legend("bottomleft", legend = names(colOA), cex=0.5,
        fill = unlist(colOA), bg="white")
 dev.off()
-
 
 
 # Figure 5 : Density plot -----------------------
