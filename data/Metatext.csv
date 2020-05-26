@@ -1,4 +1,4 @@
-﻿Survey;Contact;email;Contact2;email2;link;link2;Providr;Opn_ccs;Div_sps;Length;Continent;First year of sampling;Area
+Survey;Contact;email;Contact2;email2;link;link2;Providr;Opn_ccs;Div_sps;Length;Continent;First year of sampling;Area
 ALG;Wahid Refes;wrefes@hotmail.com;;;NA;;NA;Incomplete metadata;Incomplete metadata;Incomplete metadata;Africa;NA;Algeria
 GHA;Kofi Amador;kofi.amador@gmail.com;;;NA;;Marine Fisheries Research Division;Not publicly available;Not publicly available;Not publicly available;Africa;NA;Ghana
 GIN;Mohamed Lamine Camara;mlcamara.kennedy@gmail.com;;;NA;;Centre National des Sciences Halieutiques de Boussoura (CNSHB);Not publicly available;Not publicly available;Not publicly available;Africa;NA;Guinea
@@ -75,9 +75,9 @@ GOA;National Oceanic and Atmospheric Administration (NOAA);NA;;;https://archive.
 GSL-N;Department of Fisheries and Oceans (DFO);NA;;;https://open.canada.ca/data/dataset/;;Department of Fisheries and Oceans (DFO);Partly publicly available;Partly publicly available;Available upon request;North America;1990;Gulf of St. Lawrence North
 GSL-S;Department of Fisheries and Oceans (DFO);NA;;;https://open.canada.ca/data/dataset/;;Department of Fisheries and Oceans (DFO);Partly publicly available;Partly publicly available;Available upon request;North America;1971;Gulf of St. Lawrence South
 Gulf of Mexico;Ocean Adapt;NA;;;https://oceanadapt.rutgers.edu/;;NOAA - Ocean Adapt;Publicly available;Publicly available;Available upon request;North America;1982;Gulf of Mexico
-LEJANAS-3L;Esther Rom√°n;esther.roman@ieo.es;;;NA;;IEO Fisheries Department;Not publicly available;Not publicly available;Not publicly available;North America;NA;Flemish Cap
-LEJANAS-FLEM;Esther Rom√°n;esther.roman@ieo.es;;;NA;;IEO Fisheries Department;Not publicly available;Not publicly available;Not publicly available;North America;NA;Newfoundland NAFO area 3L
-LEJANAS-3NO;Esther Rom√°n;esther.roman@ieo.es;;;NA;;IEO Fisheries Department;Not publicly available;Not publicly available;Not publicly available;North America;NA;Newfoundland NAFO area 3L
+LEJANAS-3L;Esther Rom√°n;esther.roman@ieo.es;;;NA;;IEO Fisheries Department;Available upon request;Available upon request;Available upon request;North America;NA;Flemish Cap
+LEJANAS-FLEM;Esther Rom√°n;esther.roman@ieo.es;;;NA;;IEO Fisheries Department;Available upon request;Available upon request;Available upon request;North America;NA;Newfoundland NAFO area 3L
+LEJANAS-3NO;Esther Rom√°n;esther.roman@ieo.es;;;NA;;IEO Fisheries Department;Available upon request;Available upon request;Available upon request;North America;NA;Newfoundland NAFO area 3L
 NBS;National Oceanic and Atmospheric Administration (NOAA);NA;;;https://archive.fisheries.noaa.gov/afsc/RACE/groundfish/survey_data/data.htm;;National Oceanic and Atmospheric Administration (NOAA) Alaska Fisheries Science Center (AFSC) Resource Assessment and Conservation Engineering Division (RACE);Publicly available;Publicly available;Available upon request;North America;1982;Northern Bering Sea
 Northeast US;Ocean Adapt;NA;;;https://oceanadapt.rutgers.edu/;;NOAA - Ocean Adapt;Publicly available;Publicly available;Available upon request;North America;1963;Northeast US
 Scotian Shelf;Ocean Adapt;NA;;;https://oceanadapt.rutgers.edu/;;NOAA - Ocean Adapt;Publicly available;Publicly available;Available upon request;North America;1970;Scotian Shelf
@@ -91,13 +91,10 @@ NZ-ECSI;Fabrice Stephenson;Fabrice.Stephenson@niwa.co.nz;;;https://nzobisipt.niw
 NZ-SA;Richard O'Driscoll;richard.odriscoll@niwa.co.nz;;;https://nzobisipt.niwa.co.nz/resource.do?r=trawl;;NIWA - NZ Ministry for Primary Industries;Partly publicly available;Partly publicly available;Available upon request;Oceania;1964;New-Zealand Sub-Antarctic
 CHL;Daniela Yepsen;daniela.yepsen@gmail.com;;;NA;;University of Concepcion;Available upon request;Available upon request;Available upon request;South America;NA;Chile
 COL;Camilo Bernardo Garcia Ramirez;cbgarciar@unal.edu.co;;;NA;;Universidad Nacional de Colombia;Not publicly available;Not publicly available;Not publicly available;South America;NA;Colombian Caribbean
-FLK;Alexander Arkhipkin;AArkhipkin@fisheries.gov.fk;;;NA;;Falkland Islands Government Fisheries Department;Not publicly available;Not publicly available;Not publicly available;South America;NA;Falkland Islands
+FLK;Alexander Arkhipkin;AArkhipkin@fisheries.gov.fk;;;NA;;Falkland Islands Government Fisheries Department;Available upon request;Available upon request;Available upon request;South America;NA;Falkland Islands
 PER;Jacqueline Palacios Le√≥n;jpalacios@imarpe.gob.pe;;;NA;;Instituto del Mar del Peru (IMARPE);Not publicly available;Not publicly available;Not publicly available;South America;NA;Peru
 POKER;Félix Massiot-Granier;felix.massiot-granier@mnhn.fr;;;NA;;Muséum National d'Histoire Naturelle (MNHN);Available upon request;Available upon request;Available upon request;NA;2006;Kerguelen
 GNB;Iça Barri ;;;;NA;;Centro de Investigaçao Pesqueira Aplicada (CIPA);Not publicly available;Not publicly available;Not publicly available;Africa;NA;Guinea-Bissau
 MEDITS-MAR;Hicham Masski;hmasski@gmail.com;;;http://www.fao.org/fishery/docs/document/gfcm/sac_scsa/2007/ws-trawlsurvey_march/report.pdf;;Institut National de Recherche Halieutique (INRH);Incomplete metadata;Incomplete metadata;Incomplete metadata;Africa;1978;Morocco -Mediterranean ecosystem
 MAR-North;Hicham Masski;hmasski@gmail.com;;;https://www.jmaterenvironsci.com/Document/vol6/vol6_N6/206-JMES-1626-2015-Tai.pdf;;Institut National de Recherche Halieutique (INRH);Incomplete metadata;Incomplete metadata;Incomplete metadata;Africa;1983;Morocco - Northern Mud Shelf ecosystem
 MAR-South;Hicham Masski;hmasski@gmail.com;;;https://doi.org/10.1093/icesjms/fsm160;;Institut National de Recherche Halieutique (INRH);Incomplete metadata;Incomplete metadata;Incomplete metadata;Africa;1983;Morocco - Saharan bank
-;;;;;;;;;;;;;
-;;;;;;;;;;;;;
-;;;;;;;;;;;;;
