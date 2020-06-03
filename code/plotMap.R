@@ -29,7 +29,7 @@ makeTransparent <- function(..., alpha=0.5) {
 
 # Load shapefile
 # change the value corresponding to the last update 
-lastupdate <- "20052020"
+lastupdate <- "03062020"
 
 #make sure to select the latest shapefile
 shape<-readOGR(dsn=paste0("data/metadata/Metadata_", lastupdate, ".shp"), 
@@ -39,7 +39,7 @@ shape2<-st_read(paste0("data/metadata/Metadata_", lastupdate, ".shp"))
 meta <- read.csv(paste0("data/metadata/Metadata_", lastupdate, ".csv"), 
                    check.names = FALSE)
 
-savepdf <- FALSE #else png format
+savepdf <- TRUE #else png format
 ppi <- 300 #only if savepdf = FALSE
 
 print(length(meta$Survey)) #91 surveys
@@ -78,7 +78,7 @@ shapeWT <- spTransform(shape, CRS("+proj=wintri"))
 worldWT <- spTransform(getMap(), CRS("+proj=wintri"))
 
 #Set special color or shading for country with missing data
-missCountry <- c('Angola','Japan','India','Argentina','Malaysia','Russia')
+missCountry <- c('Angola','Japan','India','Malaysia')
 colWT <- ifelse(worldWT$SOVEREIGNT%in%missCountry,"grey40", "grey90")
 denWT<-ifelse(worldWT$SOVEREIGNT%in%missCountry, 40, -1)
 
@@ -94,8 +94,6 @@ par(mar=c(0,0,0,0))
 plot(worldWT, col=colWT, border="grey40", lwd=0.2)
 plot(shapeWT, col=oa, border=NA, add=TRUE)
 plot(worldWT, col=colWT, add=TRUE, border="grey40", lwd=0.2)
-#legend(0, bbox(shapeWT)[2,1]*0.9, legend = names(colOA), cex=0.5,
-#       fill = unlist(colOA), bg="white")
 dev.off()
 
 
@@ -111,6 +109,8 @@ par(mar=c(0,0,0,0))
 plot(worldWT, col=colWT, border="grey40", lwd=0.2, density=denWT)
 plot(shapeWT, col=oa, border=NA, add=TRUE)
 plot(worldWT, col=colWT, add=TRUE, border="grey40", lwd=0.2, density=denWT)
+# legend(0, bbox(shapeWT)[2,1]*0.9, legend = names(colOA), cex=0.5,
+#        fill = unlist(colOA), bg="white")
 dev.off()
 
 
@@ -144,7 +144,7 @@ moaC <- tapply(meta$nbHauls, list(meta$Opn_ccs, meta$Continent), sum, na.rm=TRUE
 moaC[is.na(moaC)] <- 0
 moaF <- cbind("Total"=moaT, moaC)
 moaF <- t(t(moaF)/apply(moaF,2,sum))
-lab <- c("Eur", "N.Am", "Asia", "Afr", "Ocea", "S.Am")
+lab <- c("Eur", "N.Am", "Asia", "Afr", "Ocea", "Anta", "S.Am")
 #change order of OA status
 Ooa<-rev(match(names(colOA), row.names(moaC)))
 
