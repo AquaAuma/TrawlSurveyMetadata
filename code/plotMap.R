@@ -39,7 +39,7 @@ shape2<-st_read(paste0("data/metadata/Metadata_", lastupdate, ".shp"))
 meta <- read.csv(paste0("data/metadata/Metadata_", lastupdate, ".csv"), 
                    check.names = FALSE)
 
-savepdf <- TRUE #else png format
+savepdf <- FALSE #else png format
 ppi <- 300 #only if savepdf = FALSE
 
 print(length(meta$Survey)) #91 surveys
@@ -78,7 +78,7 @@ shapeWT <- spTransform(shape, CRS("+proj=wintri"))
 worldWT <- spTransform(getMap(), CRS("+proj=wintri"))
 
 #Set special color or shading for country with missing data
-missCountry <- c('Angola','Japan','India','Argentina','Malaysia')
+missCountry <- c('Angola','Japan','India','Argentina','Malaysia','Russia')
 colWT <- ifelse(worldWT$SOVEREIGNT%in%missCountry,"grey40", "grey90")
 denWT<-ifelse(worldWT$SOVEREIGNT%in%missCountry, 40, -1)
 
