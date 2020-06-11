@@ -12,7 +12,7 @@ options('stringsAsFactors'=FALSE)
 
 # Load shapefile
 # change the value corresponding to the last update 
-lastupdate <- "03062020"
+lastupdate <- "11062020"
 
 #make sure to select the latest shapefile
 shape<-readOGR(dsn=paste0("data/metadata/Metadata_", lastupdate, ".shp"), 
@@ -20,8 +20,8 @@ shape<-readOGR(dsn=paste0("data/metadata/Metadata_", lastupdate, ".shp"),
 meta <- read.csv(paste0("data/metadata/Metadata_", lastupdate, ".csv"), 
                    check.names = FALSE)
 
-sum(meta$nbHauls)
-tapply(meta$nbHauls, meta$Opn_ccs, sum)/sum(meta$nbHauls)
+sum(meta$nbHauls, na.rm=TRUE)
+tapply(meta$nbHauls, meta$Opn_ccs, sum, na.rm=TRUE)/sum(meta$nbHauls, na.rm=TRUE)
 table(meta$Opn_ccs)/nrow(meta)*100
 #Need to merge polygons to avoid multiple polygons in same area
 #shape1 <- aggregate(shape) #aggregate doesn't work
@@ -55,7 +55,7 @@ gebco <- raster("data/GEBCO_2014_Agg25.nc")
 minlim <- c(-30, -30, -20, 0)
 maxlim <- c(-300, -500, -250, -500)
 
-png("figures//BathyThesholds.png", width=1600, height = 1200, res=200)
+png("figures/BathyThesholds.png", width=1600, height = 1200, res=200)
 par(mfrow=c(2,2), mar=c(3,3,2,1))
 for (i in 1:4){
   thraster <- gebco < minlim[i] & gebco > maxlim[i]
@@ -78,7 +78,7 @@ globco <- raster("data/Mean_L3m_20052015_GSMCHL1.nc")
 
 minlim <- c(0.25, 0.5, 0.75, 1)
 
-png("figures//PProdThesholds.png", width=1600, height = 1200, res=200)
+png("figures/PProdThesholds.png", width=1600, height = 1200, res=200)
 par(mfrow=c(2,2), mar=c(3,3,1,1))
 for (i in 1:4){
   thraster <- globco > minlim[i]
@@ -108,7 +108,7 @@ numpoly <- extract(thraster, shape2, fun=sum)
 
 lab <- paste0("Survey cover = ", round(sum(numpoly)/numraster*100), "%") # 55%
 
-png("figures//PPDetphCover.png", width=1600, height = 900, res=200)
+png("figures/PPDetphCover.png", width=1600, height = 900, res=200)
 par(mar=c(3,3,3,1), xaxs = "i", yaxs = "i")
 image(thraster, breaks=c(-0.1, 0.5, 1.2),
       col=c("white", "green"), 
@@ -129,19 +129,19 @@ thcomb <- globco > 0.5 & gebco < (-30) & gebco > (-500)
 
 thraster <- -thdepth + thpp + (2*thcomb)
 
-png("figures//PPDetphDisagregated.png", width=1600, height = 900, res=200)
-par(mar=c(3,3,3,1))
+png("figures/PPDetphDisagregated.png", width=1600, height = 900, res=200)
+par(mar=c(3,3,1,1), xaxs="i", yaxs="i")
 image(thraster, breaks=c(-1.1, -0.1, 0.5, 1.2, 2.1),
       col=c("red","white", "green", "blue"), 
-      main=lab, asp=1)
+      main="", asp=1)
 map("world", col="grey", lwd=0.2,fill=TRUE, border=NA, 
     add=TRUE)
 plot(shape, add=TRUE, lwd=0.5)
 legend("left", fill=c("red", "green", "blue"), 
        bty = "n",cex = 0.8,
-       legend = c("depth, SC=26%",
-                  "PProd, SC=24%", 
-                  "Both, SC=55%"))
+       legend = c("depth, SC=32%",
+                  "PProd, SC=27%", 
+                  "Both, SC=62%"))
 dev.off()
 
 #5. Cover per continent -------------------------
@@ -161,7 +161,7 @@ for (i in sort(unique(ContiS$id))){
 colnames(res) <- c("id", "numpix", "numcover", "coverPerc")
 
 tabSX <- cbind(ContiS@data, res[,-1])
-write.csv(tabSX, file = "figures//TabSX_CoverPerContinent.csv", 
+write.csv(tabSX, file = "figures/TabSX_CoverPerContinent.csv", 
           row.names = FALSE)
 
 
@@ -181,7 +181,7 @@ numpoly <- extract(thraster, shape2, fun=sum, na.rm=TRUE)
 
 lab <- paste0("Trawl Fishing 2013-2016 - Survey cover = ", round(sum(numpoly)/numraster*100), "%") # 51%
 
-png("figures//Fishing201316Cover.png", width=1600, height = 900, res=200)
+png("figures/Fishing201316Cover.png", width=1600, height = 900, res=200)
 par(mar=c(3,3,3,1), xaxs = "i", yaxs = "i")
 image(thraster, breaks=c(-0.1, 0.5, 1.2),
       col=c("white", "green"), xlim=c(-180, 180),
@@ -194,7 +194,7 @@ dev.off()
 
 
 yr <- 2013:2016
-png("figures//FishingCover.png", width=1600, height = 900, res=200)
+png("figures/FishingCover.png", width=1600, height = 900, res=200)
 
 par(mfrow=c(2,2), mar=c(3,3,3,1), xaxs = "i", yaxs = "i")
 for (i in 1:4){
