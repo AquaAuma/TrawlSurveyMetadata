@@ -1,5 +1,5 @@
 # Script to create figure 1, 2 and 4 - map of the surveys
-# Last update 04.05.2020, by R. Frelat
+# Last update 11.06.2020, by R. Frelat
 
 #0. Load package and data -----------------------
 # Load needed package
@@ -10,7 +10,7 @@ library(sf)
 library(maps)
 library(mapdata)
 library(VAST)
-options('stringsAsFactors'=FALSE)
+options('stringsAsFactors'=FALSE, 'na.rm'=TRUE)
 
 #Additional function for transparent color
 #https://stackoverflow.com/questions/8047668/transparent-equivalent-of-given-color
@@ -25,27 +25,24 @@ makeTransparent <- function(..., alpha=0.5) {
   return(newColor)
 }
 
-
-
 # Load shapefile
 # change the value corresponding to the last update 
-lastupdate <- "20052020"
+lastupdate <- "11062020"
 
 #make sure to select the latest shapefile
 shape<-readOGR(dsn=paste0("data/metadata/Metadata_", lastupdate, ".shp"), 
                layer=paste0("Metadata_", lastupdate))
-#Not sure why, but need st_read for dateline
-shape2<-st_read(paste0("data/metadata/Metadata_", lastupdate, ".shp"))
 meta <- read.csv(paste0("data/metadata/Metadata_", lastupdate, ".csv"), 
                    check.names = FALSE)
 
-savepdf <- FALSE #else png format
+savepdf <- TRUE #else png format
 ppi <- 300 #only if savepdf = FALSE
 
-print(length(meta$Survey)) #91 surveys
-print(sum(meta$nbHauls)) #271188 hauls
+print(length(meta$Survey)) #94 surveys
+print(sum(meta$nbHauls, na.rm=TRUE)) #280281 hauls
 # tapply(meta$nbHauls, meta$Continent, sum)
-print(tapply(meta$nbHauls, meta$Opn_ccs, sum)/sum(meta$nbHauls)*100)
+print(tapply(meta$nbHauls, meta$Opn_ccs, sum, na.rm=TRUE)/sum(meta$nbHauls, na.rm=TRUE)*100)
+
 #Figure 1 : Global coverage ---------------------
 # Set colors for Open Access status
 colOA <- list("Publicly available" = "blue",
@@ -55,12 +52,13 @@ colOA <- list("Publicly available" = "blue",
               "Incomplete metadata"="black")
 
 # Change plot order (best OA on top)
-oafac <- factor(meta$Opn_ccs, levels = rev(names(colOA)), 
+oafac <- factor(shape$Opn_ccs, levels = rev(names(colOA)), 
                 ordered = TRUE)
 shapeOr <- order(oafac)
 shape <- shape[shapeOr, ]
+shape$Survey
 meta <- meta[shapeOr,]
-#shape@plotOrder <- shapeOr
+shape@plotOrder <- 1:length(shape)
 
 # Get color for each polygon
 oa <- unlist(colOA[shape$Opn_ccs])
@@ -78,9 +76,8 @@ shapeWT <- spTransform(shape, CRS("+proj=wintri"))
 worldWT <- spTransform(getMap(), CRS("+proj=wintri"))
 
 #Set special color or shading for country with missing data
-missCountry <- c('Angola','Japan','India','Argentina','Malaysia','Russia')
+missCountry <- c('Angola','Japan','India','Malaysia')
 colWT <- ifelse(worldWT$SOVEREIGNT%in%missCountry,"grey40", "grey90")
-denWT<-ifelse(worldWT$SOVEREIGNT%in%missCountry, 40, -1)
 
 if (savepdf){
   pdf(paste0("figures/figure1A_", lastupdate, ".pdf"), 
@@ -94,25 +91,7 @@ par(mar=c(0,0,0,0))
 plot(worldWT, col=colWT, border="grey40", lwd=0.2)
 plot(shapeWT, col=oa, border=NA, add=TRUE)
 plot(worldWT, col=colWT, add=TRUE, border="grey40", lwd=0.2)
-#legend(0, bbox(shapeWT)[2,1]*0.9, legend = names(colOA), cex=0.5,
-#       fill = unlist(colOA), bg="white")
 dev.off()
-
-
-if (savepdf){
-  pdf(paste0("figures/figure1Abis_", lastupdate, ".pdf"), 
-      width = 8, height = 6)
-} else {
-  png(paste0("figures/figure1Abis_", lastupdate, ".png"), 
-      width = 8*ppi, height = 6*ppi, res=ppi)
-}
-
-par(mar=c(0,0,0,0))
-plot(worldWT, col=colWT, border="grey40", lwd=0.2, density=denWT)
-plot(shapeWT, col=oa, border=NA, add=TRUE)
-plot(worldWT, col=colWT, add=TRUE, border="grey40", lwd=0.2, density=denWT)
-dev.off()
-
 
 #without open access status
 if (savepdf){
@@ -128,7 +107,7 @@ plot(shapeWT, col=rainbow(length(shapeWT)), border=NA, add=TRUE)
 plot(worldWT, col="grey80", add=TRUE, border="grey40", lwd=0.2)
 dev.off()
 
-# Figure 3: Time series of surveys --------------
+# Figure 1BC: Time series of surveys --------------
 period <- 2001:2018
 tsm <- meta[,as.character(period)]
 oa <- factor(meta$Opn_ccs, levels = rev(names(colOA)), ordered = TRUE)
@@ -136,15 +115,15 @@ tsmoa <- apply(tsm, 2, function(x) tapply(x, oa, sum))
 
 #per region
 cct <- as.factor(meta$Continent)
-Occt <- order(tapply(meta$nbHauls, meta$Continent, sum), decreasing = TRUE)
+Occt <- order(tapply(meta$nbHauls, meta$Continent, sum, na.rm=TRUE), decreasing = TRUE)
 
 #No time series
-moaT <- tapply(meta$nbHauls, meta$Opn_ccs, sum)
+moaT <- tapply(meta$nbHauls, meta$Opn_ccs, sum, na.rm=TRUE)
 moaC <- tapply(meta$nbHauls, list(meta$Opn_ccs, meta$Continent), sum, na.rm=TRUE)
 moaC[is.na(moaC)] <- 0
 moaF <- cbind("Total"=moaT, moaC)
-moaF <- t(t(moaF)/apply(moaF,2,sum))
-lab <- c("Eur", "N.Am", "Asia", "Afr", "Ocea", "S.Am")
+moaF <- t(t(moaF)/apply(moaF,2,sum, na.rm=TRUE))
+lab <- c("Eur", "N.Am", "Asia", "Afr", "Ocea",  "S.Am", "Anta")
 #change order of OA status
 Ooa<-rev(match(names(colOA), row.names(moaC)))
 
@@ -208,9 +187,15 @@ map.axes()
 dev.off()
 
 # Across Dateline
-inc <- ! (shape2$minLong< 0 & shape2$maxLong> 0) | shape2$Survey%in%c("NZ-CHAT")
-shapeDL <- subset(shape2, inc)
-# shape2$Survey[!shape2$Survey%in%shapeDL$Survey]
+# Not sure why, but need st_read for dateline
+# shape2<-st_read(paste0("data/metadata/Metadata_", lastupdate, ".shp"))
+# shape2 <- shape[shapeOr, ]
+# inc <- ! (shape2$minLong< 0 & shape2$maxLong> 0) | shape2$Survey%in%c("NZ-CHAT")
+# shapeDL <- subset(shape2, inc)
+
+inc <- ! (shape$minLong< 0 & shape$maxLong> 0) | shape$Survey%in%c("NZ-CHAT")
+shapeDL <- subset(shape, inc)
+# shape$Survey[!shape$Survey%in%shapeDL$Survey]
 # Removed 7 surveys that are across longitude 0
 # "NS-IBTS", "CGFS", "NOR-BTS", "AI", "ALG", "MEDITS-ESP", "GHA"    
 oaDL <- unlist(colOA[shapeDL$Opn_ccs])
@@ -283,7 +268,9 @@ legend("bottomleft", legend = names(colOA), cex=0.5,
 dev.off()
 
 # North Pole view
-inc <- (shape$minLat>30 & shape$maxLat> 30)
+inc <- (shape$minLat>0 & shape$maxLat> 30 & !shape$Survey%in%c("Gulf of Mexico"))
+shape$Survey[inc]
+shape@data[shape$Survey=="KOR",]
 shapeN <- subset(shape, inc)
 xlim <-  c(-180,200)
 ylim <-  c(30,90)
@@ -292,9 +279,18 @@ m <- map("world", xlim=xlim , ylim=ylim, plot = FALSE,
 IDs <- sapply(strsplit(m$names, ":"), function(x) x[1])
 worldN <- maptools::map2SpatialPolygons(m, IDs=IDs, proj4string = CRS(proj4string(shape)))
 
+p <-  rbind(c(xlim[1], ylim[1]),
+            c(xlim[1], ylim[2]),
+            c(xlim[2], ylim[2]),
+            c(xlim[2], ylim[1]),
+            c(xlim[1], ylim[1]))
+bb = SpatialPolygons(list(Polygons(list(Polygon(list(p))),"S")), proj4string = CRS(proj4string(shape)))
+shapeNclip <- intersect(shapeN, bb)
+shapeNclip@plotOrder <- 1:length(shapeNclip)
+
 proj <- "+proj=stere +lat_0=90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +a=6378273 +b=6356889.449 +units=m +no_defs"
 worldNview <- spTransform(worldN, CRSobj = CRS(proj))
-shapeNview <- spTransform(shapeN, CRSobj = CRS(proj))
+shapeNview <- spTransform(shapeNclip, CRSobj = CRS(proj))
 
 oaN <- unlist(colOA[shapeNview$Opn_ccs])
 transoaN <- makeTransparent(oaN)
@@ -320,17 +316,17 @@ if (savepdf){
   png(paste0("figures/appendix4.figure4.6_", lastupdate, ".png"), 
       width = 9*ppi, height = 4.6*ppi, res=ppi)
 }
-par(mar=c(3,3,0.5,0.5), yaxs="i", xaxs="i")
+par(mar=c(1,1,1,1))
 plot(worldNview, col="grey80", border="grey40", lwd=0.2)
 lines(gl.polar, add = TRUE, lwd=0.2, lty=2, xpd=NA)
 lines(ll.polar, lwd = 3, lty = 1, xpd=NA)
-plot(shapeNview, col=oaN, border=NA, add=TRUE)
-# text(l1, cex = 1, adj = c( 0.5, 2 ),  col = "black")
-# text(l2, cex = 1, adj = c( 0.5, 2 ),  col = "black")
+plot(shapeNview, col=oaN, border=NA, add=TRUE, lforce=TRUE)
 dev.off()
 
 # South Pole view
-inc <- (shape$minLat< -30 & shape$maxLat< -30)
+inc <- (shape$minLat<= -30 & shape$maxLat<= -20)
+shape$Survey[inc]
+
 shapeS <- subset(shape, inc)
 xlim <-  c(-180,200)
 ylim <-  c(-90,-30)
@@ -339,12 +335,21 @@ m <- map("world", xlim=xlim , ylim=ylim, plot = FALSE,
 IDs <- sapply(strsplit(m$names, ":"), function(x) x[1])
 worldS <- maptools::map2SpatialPolygons(m, IDs=IDs, proj4string = CRS(proj4string(shape)))
 
+p <-  rbind(c(xlim[1], ylim[1]),
+            c(xlim[1], ylim[2]),
+            c(xlim[2], ylim[2]),
+            c(xlim[2], ylim[1]),
+            c(xlim[1], ylim[1]))
+bb = SpatialPolygons(list(Polygons(list(Polygon(list(p))),"S")), 
+                     proj4string = CRS(proj4string(shape)))
+shapeSclip <- intersect(shapeS, bb)
+shapeSclip@plotOrder <- 1:length(shapeSclip)
+
 proj <- "+proj=stere +lat_0=-90 +lat_ts=70 +lon_0=-45 +k=1 +x_0=0 +y_0=0 +a=6378273 +b=6356889.449 +units=m +no_defs"
 worldSview <- spTransform(worldS, CRSobj = CRS(proj))
-shapeSview <- spTransform(shapeS, CRSobj = CRS(proj))
+shapeSview <- spTransform(shapeSclip, CRSobj = CRS(proj))
 
 oaS <- unlist(colOA[shapeSview$Opn_ccs])
-transoaS <- makeTransparent(oaS)
 
 # Ploting details from https://khufkens.com/2017/01/18/r-polar-plots/
 pts <- SpatialPoints(rbind(c(-180,-85),c(0,-85),c(180,-30),c(180,-30)), 
@@ -382,7 +387,7 @@ load("data/vast/Arrowtooth_2020-03-18.RData")
 
 projargs_plot <- "+proj=utm +datum=WGS84 +units=km +zone=3"
 n_cells <-  125^2
-surveyWAm <-shape$Survey[shape$Continent=="North America"]
+surveyWAm <-shape$Survey[shape$Contnnt=="North America"]
  # c("Aleutian Islands", "Eastern Bering Sea", 
  #               "Gulf of Alaska", , "DFO-WCHG", "DFO-QCS", 
  #               "DFO-HS","DFO-NF",

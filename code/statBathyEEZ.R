@@ -12,16 +12,16 @@ options('stringsAsFactors'=FALSE)
 
 # Load shapefile
 # change the value corresponding to the last update 
-lastupdate <- "04052020"
+lastupdate <- "11062020"
 
 #make sure to select the latest shapefile
-shape<-readOGR(dsn=paste0("../Data/Metadata_", lastupdate, ".shp"), 
+shape<-readOGR(dsn=paste0("data/metadata/Metadata_", lastupdate, ".shp"), 
                layer=paste0("Metadata_", lastupdate))
-meta <- read.csv(paste0("../Data/Metadata_", lastupdate, ".csv"), 
+meta <- read.csv(paste0("data/metadata/Metadata_", lastupdate, ".csv"), 
                    check.names = FALSE)
 
-sum(meta$nbHauls)
-tapply(meta$nbHauls, meta$Opn_ccs, sum)/sum(meta$nbHauls)
+sum(meta$nbHauls, na.rm=TRUE)
+tapply(meta$nbHauls, meta$Opn_ccs, sum, na.rm=TRUE)/sum(meta$nbHauls, na.rm=TRUE)
 table(meta$Opn_ccs)/nrow(meta)*100
 #Need to merge polygons to avoid multiple polygons in same area
 #shape1 <- aggregate(shape) #aggregate doesn't work
@@ -29,7 +29,7 @@ shape2 <- st_combine(st_as_sf(shape))
 shape2 <- as(shape2, "Spatial")
 
 #1. Compare with EEZ ----------------------------
-eezR <- raster("../Data/eez_v11_R04.nc")
+eezR <- raster("data/eez_v11_R04.nc")
 #284 unique values - unique EEZ
 #intersection between shape and eez
 sheez <- extract(eezR, shape)
@@ -41,7 +41,7 @@ sheezU <- sheezU[!is.na(sheezU)]
 
 #Check the correspondance to country
 require(sf)
-eezP <- st_read(paste0("../Data/eez_v11.shp"))
+eezP <- st_read(paste0("data/eez_v11.shp"))
 eezP$GEONAME[match(sheezU, eezP$MRGID)]
 sheezC <- c(eezP$TERRITORY1[match(sheezU, eezP$MRGID)], 
             eezP$TERRITORY2[match(sheezU, eezP$MRGID)],
@@ -51,11 +51,11 @@ length(unique(sheezC)) # 65 countries
 
 
 #2. Check bathymetry thresholds -----------------
-gebco <- raster("../Data/GEBCO_2014_Agg25.nc")
+gebco <- raster("data/GEBCO_2014_Agg25.nc")
 minlim <- c(-30, -30, -20, 0)
 maxlim <- c(-300, -500, -250, -500)
 
-png("../Figures/BathyThesholds.png", width=1600, height = 1200, res=200)
+png("figures/BathyThesholds.png", width=1600, height = 1200, res=200)
 par(mfrow=c(2,2), mar=c(3,3,2,1))
 for (i in 1:4){
   thraster <- gebco < minlim[i] & gebco > maxlim[i]
@@ -73,12 +73,12 @@ dev.off()
 
 
 #3. Check primary production thresholds -----------------
-globco <- raster("../Data/Mean_L3m_20052015_GSMCHL1.nc")
+globco <- raster("data/Mean_L3m_20052015_GSMCHL1.nc")
 #plot(globco)
 
 minlim <- c(0.25, 0.5, 0.75, 1)
 
-png("../Figures/PProdThesholds.png", width=1600, height = 1200, res=200)
+png("figures/PProdThesholds.png", width=1600, height = 1200, res=200)
 par(mfrow=c(2,2), mar=c(3,3,1,1))
 for (i in 1:4){
   thraster <- globco > minlim[i]
@@ -108,7 +108,7 @@ numpoly <- extract(thraster, shape2, fun=sum)
 
 lab <- paste0("Survey cover = ", round(sum(numpoly)/numraster*100), "%") # 55%
 
-png("../Figures/PPDetphCover.png", width=1600, height = 900, res=200)
+png("figures/PPDetphCover.png", width=1600, height = 900, res=200)
 par(mar=c(3,3,3,1), xaxs = "i", yaxs = "i")
 image(thraster, breaks=c(-0.1, 0.5, 1.2),
       col=c("white", "green"), 
@@ -129,24 +129,24 @@ thcomb <- globco > 0.5 & gebco < (-30) & gebco > (-500)
 
 thraster <- -thdepth + thpp + (2*thcomb)
 
-png("../Figures/PPDetphDisagregated.png", width=1600, height = 900, res=200)
-par(mar=c(3,3,3,1))
+png("figures/PPDetphDisagregated.png", width=1600, height = 900, res=200)
+par(mar=c(3,3,1,1), xaxs="i", yaxs="i")
 image(thraster, breaks=c(-1.1, -0.1, 0.5, 1.2, 2.1),
       col=c("red","white", "green", "blue"), 
-      main=lab, asp=1)
+      main="", asp=1)
 map("world", col="grey", lwd=0.2,fill=TRUE, border=NA, 
     add=TRUE)
 plot(shape, add=TRUE, lwd=0.5)
 legend("left", fill=c("red", "green", "blue"), 
        bty = "n",cex = 0.8,
-       legend = c("depth, SC=26%",
-                  "PProd, SC=24%", 
-                  "Both, SC=55%"))
+       legend = c("depth, SC=32%",
+                  "PProd, SC=27%", 
+                  "Both, SC=62%"))
 dev.off()
 
 #5. Cover per continent -------------------------
-Conti <- raster("../Data/Conti_R04.nc")
-ContiS<-readOGR(dsn="../Data/ContinentShelf.shp", 
+Conti <- raster("data/Conti_R04.nc")
+ContiS<-readOGR(dsn="data/ContinentShelf.shp", 
                layer="ContinentShelf")
 res(globco)
 res <- c()
@@ -161,12 +161,12 @@ for (i in sort(unique(ContiS$id))){
 colnames(res) <- c("id", "numpix", "numcover", "coverPerc")
 
 tabSX <- cbind(ContiS@data, res[,-1])
-write.csv(tabSX, file = "../Figures/TabSX_CoverPerContinent.csv", 
+write.csv(tabSX, file = "figures/TabSX_CoverPerContinent.csv", 
           row.names = FALSE)
 
 
 #5. Cover of fishing ground -------------------------
-Fishing <- stack("../Data/TrawlFishing20132016_R04.tif")
+Fishing <- stack("data/TrawlFishing20132016_R04.tif")
 names(Fishing) <- c(2013:2016, "sum")
 #plot(Fishing[[5]])
 
@@ -181,7 +181,7 @@ numpoly <- extract(thraster, shape2, fun=sum, na.rm=TRUE)
 
 lab <- paste0("Trawl Fishing 2013-2016 - Survey cover = ", round(sum(numpoly)/numraster*100), "%") # 51%
 
-png("../Figures/Fishing201316Cover.png", width=1600, height = 900, res=200)
+png("figures/Fishing201316Cover.png", width=1600, height = 900, res=200)
 par(mar=c(3,3,3,1), xaxs = "i", yaxs = "i")
 image(thraster, breaks=c(-0.1, 0.5, 1.2),
       col=c("white", "green"), xlim=c(-180, 180),
@@ -194,7 +194,7 @@ dev.off()
 
 
 yr <- 2013:2016
-png("../Figures/FishingCover.png", width=1600, height = 900, res=200)
+png("figures/FishingCover.png", width=1600, height = 900, res=200)
 
 par(mfrow=c(2,2), mar=c(3,3,3,1), xaxs = "i", yaxs = "i")
 for (i in 1:4){
