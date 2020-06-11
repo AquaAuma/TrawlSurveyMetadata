@@ -15,7 +15,7 @@ library(psych)
 fao <- readOGR(dsn = "data/fao",layer="FAO_AREAS")
 
 # Load Aquamaps data
-fao.zone <- c(21,27,31,34,37,41,47,51,57,61,67,71,77,81,87)
+fao.zone <- c(21,27,31,34,37,41,47,51,57,58,61,67,71,77,81,87)
 
 dat.fao <- data.frame()
 for (i in 1:length(fao.zone)){
@@ -52,7 +52,7 @@ dat.fao$Species <- substr(dat.fao$Species, start=1, stop=nchar(dat.fao$Species)-
 # Minimum probability:0.1
 dat.fao <- dat.fao %>% 
   select(-square, -Genus, -F_AREA) %>% 
-  filter(probability>=0.9)
+  filter(probability>=0.1)
 
 # Group species which are present on several FAO areas
 spp.multiple <- c('Gadus morhua','Melanogrammus aeglefinus','Mugil cephalus','Trichiurus lepturus','Thyrsites atun',
@@ -86,7 +86,7 @@ dat <- left_join(dat, codes, by='Species')
 ###########################
 #### 2. Convex hull
 ###########################
-bts <- readOGR(dsn = "data/metadata/Metadata_17042020.shp",layer="Metadata_17042020")
+bts <- readOGR(dsn = "data/metadata/Metadata_11062020.shp",layer="Metadata_11062020")
 
 # Merge convex hull with the FAO catch data
 dato <- dat
@@ -113,7 +113,7 @@ codes$Species <- as.character(codes$Species)
 codes$ASFIS <- as.character(codes$ASFIS)
 codes <- codes[order(codes$Species),]
 
-pdf(file = "figures/SI.Appendix5.pdf")
+pdf(file = "figures/SI.Appendix5.11.06.pdf")
 for(i in 1:nrow(codes)){
   minlat <- min(dat[dat$Species==codes$Species[i],]$lat)
   maxlat <- max(dat[dat$Species==codes$Species[i],]$lat)
@@ -206,7 +206,7 @@ ggnbr <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=NumberSurveys, fill=OA)) + 
         axis.title.x=element_text(size=20)) + coord_flip() + theme(axis.text.x = element_text(angle=0),
                                                                    panel.grid.major = element_blank(),
                                                                    panel.grid.minor = element_blank()) +
-  geom_vline(xintercept=9.5, lwd=2, lty=2) + annotate("rect", xmin = 9.5, xmax = 35, ymin = 0, ymax = 60,alpha = .25) + 
+  geom_vline(xintercept=10.5, lwd=2, lty=2) + annotate("rect", xmin = 10.5, xmax = 38, ymin = 0, ymax = 60,alpha = .25) + 
   scale_y_continuous(expand = c(0, 0))
 
 gghabitat <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=Prop, fill=OA)) + geom_bar(stat="identity", color="black") +
@@ -216,7 +216,7 @@ gghabitat <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=Prop, fill=OA)) + geom_
                                  values=c('purple','black','red','orange','blue')) +
   theme(axis.text.x=element_text(color = "black", size=12, angle=90, vjust=0.5, hjust=0.8)) + 
   ylab('Proportion of habitat covered') + xlab('')  +
-  theme(legend.position = c(0.35,0.90)) + theme(axis.text.y=element_text(size=20),axis.text.x=element_text(size=20),
+  theme(legend.position = c(0.30,0.90)) + theme(axis.text.y=element_text(size=20),axis.text.x=element_text(size=20),
                                                axis.title=element_text(size=20), legend.text = element_text(size=20),
                                                panel.grid.major = element_blank(),
                                                panel.grid.minor = element_blank()) + 
