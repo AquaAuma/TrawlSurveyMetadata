@@ -37,7 +37,8 @@ sheez <- extract(eezR, shape)
 #Look at unique id
 sheezU <- unique(unlist(sheez))
 sheezU <- sheezU[!is.na(sheezU)]
-#69 unique EEZ
+#77 unique EEZ
+length(sheezU)
 
 #Check the correspondance to country
 require(sf)

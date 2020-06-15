@@ -1,5 +1,5 @@
 # Script to create figure 1, 2 and 4 - map of the surveys
-# Last update 11.06.2020, by R. Frelat
+# Last update 15.06.2020, by R. Frelat
 
 #0. Load package and data -----------------------
 # Load needed package
@@ -27,7 +27,7 @@ makeTransparent <- function(..., alpha=0.5) {
 
 # Load shapefile
 # change the value corresponding to the last update 
-lastupdate <- "11062020"
+lastupdate <- "15062020"
 
 #make sure to select the latest shapefile
 shape<-readOGR(dsn=paste0("data/metadata/Metadata_", lastupdate, ".shp"), 
@@ -123,7 +123,7 @@ moaC <- tapply(meta$nbHauls, list(meta$Opn_ccs, meta$Continent), sum, na.rm=TRUE
 moaC[is.na(moaC)] <- 0
 moaF <- cbind("Total"=moaT, moaC)
 moaF <- t(t(moaF)/apply(moaF,2,sum, na.rm=TRUE))
-lab <- c("Eur", "N.Am", "Asia", "Afr", "Ocea",  "S.Am", "Anta")
+lab <- c("Europe", "N. America", "Asia", "Africa", "Oceania",  "S. America", "Antartica")
 #change order of OA status
 Ooa<-rev(match(names(colOA), row.names(moaC)))
 
@@ -135,17 +135,23 @@ if (savepdf){
       width = 6*ppi, height = 6*ppi, res=ppi)
 }
 par(mfrow=c(2,1), las=1, mar=c(4,8,2,1))
-barplot(moaC[Ooa,Occt], col=rev(unlist(colOA)), 
-        names.arg=lab, main="Number of stations", 
+barp <- barplot(moaC[Ooa,Occt], col=rev(unlist(colOA)), 
+        names.arg=rep("", ncol(moaC)), ylab="Number of samples", 
         yaxt="n")
 axis(2, seq(0, 100000, length.out = 6),
      labels = c(0, "20k", "40k", "60k", "80k", "100k"), xpd=NA)
+text(barp, par("usr")[3]-10000, 
+      srt = 45, adj = 1, xpd = TRUE,
+      labels = lab)
 legend("topright", legend = names(colOA),
        fill = unlist(colOA), bty="n", cex=0.8)
 par(mar=c(4,4,2,1))
-barplot(moaF[Ooa,c(1, Occt+1)], col=rev(unlist(colOA)), 
-        main="Relative number of stations", 
-        names.arg=c("Total", lab), ylab="%")
+barp <- barplot(moaF[Ooa,c(1, Occt+1)], col=rev(unlist(colOA)), 
+        main="", names.arg=rep("", ncol(moaF)), 
+        ylab="Relative number (%)")
+text(barp, par("usr")[3]-0.1, 
+     srt = 45, adj = 1, xpd = TRUE,
+     labels = c("Total", lab))
 dev.off()
 
 #Figure 2 : Regional zoom -----------------------
@@ -387,7 +393,7 @@ load("data/vast/Arrowtooth_2020-03-18.RData")
 
 projargs_plot <- "+proj=utm +datum=WGS84 +units=km +zone=3"
 n_cells <-  125^2
-surveyWAm <-shape$Survey[shape$Contnnt=="North America"]
+surveyWAm <-shape$Survey[shape$Continent=="North America"]
  # c("Aleutian Islands", "Eastern Bering Sea", 
  #               "Gulf of Alaska", , "DFO-WCHG", "DFO-QCS", 
  #               "DFO-HS","DFO-NF",
