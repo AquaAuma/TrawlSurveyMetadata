@@ -52,7 +52,7 @@ dat.fao$Species <- substr(dat.fao$Species, start=1, stop=nchar(dat.fao$Species)-
 # Minimum probability:0.1
 dat.fao <- dat.fao %>% 
   select(-square, -Genus, -F_AREA) %>% 
-  filter(probability>=0.1)
+  filter(probability>=0.9)
 
 # Group species which are present on several FAO areas
 spp.multiple <- c('Gadus morhua','Melanogrammus aeglefinus','Mugil cephalus','Trichiurus lepturus','Thyrsites atun',
@@ -86,7 +86,7 @@ dat <- left_join(dat, codes, by='Species')
 ###########################
 #### 2. Convex hull
 ###########################
-bts <- readOGR(dsn = "data/metadata/Metadata_11062020.shp",layer="Metadata_11062020")
+bts <- readOGR(dsn = "data/metadata/Metadata_15062020.shp",layer="Metadata_15062020")
 
 # Merge convex hull with the FAO catch data
 dato <- dat
@@ -113,7 +113,7 @@ codes$Species <- as.character(codes$Species)
 codes$ASFIS <- as.character(codes$ASFIS)
 codes <- codes[order(codes$Species),]
 
-pdf(file = "figures/SI.Appendix5.11.06.pdf")
+pdf(file = "figures/SI.Appendix5.15.06.pdf")
 for(i in 1:nrow(codes)){
   minlat <- min(dat[dat$Species==codes$Species[i],]$lat)
   maxlat <- max(dat[dat$Species==codes$Species[i],]$lat)
