@@ -12,7 +12,7 @@ options('stringsAsFactors'=FALSE)
 
 # Load shapefile
 # change the value corresponding to the last update 
-lastupdate <- "11062020"
+lastupdate <- "18062020"
 
 #make sure to select the latest shapefile
 shape<-readOGR(dsn=paste0("data/metadata/Metadata_", lastupdate, ".shp"), 
@@ -140,7 +140,7 @@ map("world", col="grey", lwd=0.2,fill=TRUE, border=NA,
 plot(shape, add=TRUE, lwd=0.5)
 legend("left", fill=c("red", "green", "blue"), 
        bty = "n",cex = 0.8,
-       legend = c("depth, SC=32%",
+       legend = c("depth, SC=33%",
                   "PProd, SC=27%", 
                   "Both, SC=62%"))
 dev.off()

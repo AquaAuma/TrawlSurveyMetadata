@@ -27,7 +27,7 @@ makeTransparent <- function(..., alpha=0.5) {
 
 # Load shapefile
 # change the value corresponding to the last update 
-lastupdate <- "15062020"
+lastupdate <- "18062020"
 
 #make sure to select the latest shapefile
 shape<-readOGR(dsn=paste0("data/metadata/Metadata_", lastupdate, ".shp"), 
