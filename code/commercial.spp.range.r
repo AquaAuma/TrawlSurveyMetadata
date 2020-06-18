@@ -86,7 +86,7 @@ dat <- left_join(dat, codes, by='Species')
 ###########################
 #### 2. Convex hull
 ###########################
-bts <- readOGR(dsn = "data/metadata/Metadata_15062020.shp",layer="Metadata_15062020")
+bts <- readOGR(dsn = "data/metadata/Metadata_18062020.shp",layer="Metadata_18062020")
 
 # Merge convex hull with the FAO catch data
 dato <- dat
@@ -113,7 +113,7 @@ codes$Species <- as.character(codes$Species)
 codes$ASFIS <- as.character(codes$ASFIS)
 codes <- codes[order(codes$Species),]
 
-pdf(file = "figures/SI.Appendix5.15.06.pdf")
+pdf(file = "figures/SI.Appendix5.18.06.pdf")
 for(i in 1:nrow(codes)){
   minlat <- min(dat[dat$Species==codes$Species[i],]$lat)
   maxlat <- max(dat[dat$Species==codes$Species[i],]$lat)
