@@ -61,6 +61,8 @@ centroids.df <- as.data.frame(coordinates(eez))
 idList <- cbind(idList, centroids.df)
 names(idList) <- c('SOVEREIGN1', 'long','lat')
 
+pdf('figures/Stocks.Maps.pdf')
+
 # load shapefiles for one stock
 stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[1])
 ggplot() + 
@@ -438,8 +440,8 @@ ggplot() +
   geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
   coord_quickmap(ylim=c(30,50), xlim=c(0,40)) + theme_bw() + ylab('') + xlab('') +
   ggtitle(paste(ram.metadata$stockid[39],ram.metadata$species[38], sep=' ')) + theme_bw() +
-  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('France','Spain','Algeria','Tunisia','Italy','Greece','Slovenia','Montenegro','Croatia','Albania','Libya','Egypt'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
-  geom_text(data = idList[idList$SOVEREIGN1 %in% c('France','Spain','Algeria','Tunisia','Italy','Greece','Slovenia','Montenegro','Croatia','Albania','Libya','Egypt'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Algeria','Tunisia','Italy','Malta','Greece','Slovenia','Montenegro','Croatia','Albania','Libya','Egypt'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Algeria','Tunisia','Italy','Malta','Greece','Slovenia','Montenegro','Croatia','Albania','Libya','Egypt'),], aes(x = long, y = lat, label = SOVEREIGN1), 
             size = 4, col='orange')
 
 stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[40])
@@ -448,6 +450,239 @@ ggplot() +
   geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
   coord_quickmap(ylim=c(30,50), xlim=c(0,40)) + theme_bw() + ylab('') + xlab('') +
   ggtitle(paste(ram.metadata$stockid[40],ram.metadata$species[40], sep=' ')) + theme_bw() +
-  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('France','Spain','Algeria','Tunisia','Italy','Greece','Libya','Egypt'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
-  geom_text(data = idList[idList$SOVEREIGN1 %in% c('France','Spain','Algeria','Tunisia','Italy','Greece','Libya','Egypt'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Albania','Malta','Tunisia','Italy','Greece','Libya','Egypt','Turkey'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Albania','Malta','Tunisia','Italy','Greece','Libya','Egypt','Turkey'),], aes(x = long, y = lat, label = SOVEREIGN1), 
             size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[41])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(30,50), xlim=c(0,40)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[41],ram.metadata$species[41], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Algeria','Tunisia','Italy','Greece','Libya','Egypt','Turkey'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Algeria','Tunisia','Italy','Greece','Libya','Egypt','Turkey'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[42])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(30,50), xlim=c(0,40)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[42],ram.metadata$species[42], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('France','Spain','Algeria','Tunisia','Italy','Greece'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('France','Spain','Algeria','Tunisia','Italy','Greece'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[43])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(30,50), xlim=c(20,60)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[43],ram.metadata$species[43], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Bulgaria','Romania','Turkey','Russia','Ukraine','Georgia'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Bulgaria','Romania','Turkey','Ukraine','Russia','Georgia'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[44])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(30,60), xlim=c(-100,-50)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[44],ram.metadata$species[44], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Canada','United States'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Canada','United States'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[45])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(50,60), xlim=c(0,30)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[45],ram.metadata$species[45], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Denmark','Sweden','Germany','Poland'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Denmark','Sweden','Germany','Poland'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[46])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(50,70), xlim=c(0,40)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[46],ram.metadata$species[46], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Denmark','Sweden','Germany','Poland','Finland','Russia','Estonia','Lettonia'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Denmark','Sweden','Germany','Poland','Finland','Russia','Estonia','Lettonia'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[47])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(45,65), xlim=c(-20,10)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[47],ram.metadata$species[47], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','United Kingdom'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','United Kingdom'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[48])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(50,60), xlim=c(0,30)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[48],ram.metadata$species[48], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Denmark','Sweden','Germany','Norway'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Denmark','Sweden','Germany','Norway'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[49])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(45,60), xlim=c(-20,10)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[49],ram.metadata$species[49], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','United Kingdom','France'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','United Kingdom','France'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[50])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(50,65), xlim=c(-20,10)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[50],ram.metadata$species[50], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','United Kingdom','France'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','United Kingdom','France'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[51])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(35,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[51],ram.metadata$species[51], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','United Kingdom','France','Spain','Norway','Denmark','Netherlands','Belgium','Sweden'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','United Kingdom','France','Spain','Norway','Denmark','Netherlands','Belgium','Sweden'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[52])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[52],ram.metadata$species[52], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','United Kingdom','France','Spain','Norway','Denmark','Netherlands','Belgium','Sweden'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','United Kingdom','France','Spain','Norway','Denmark','Netherlands','Belgium','Sweden'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[53])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[53],ram.metadata$species[53], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','United Kingdom'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','United Kingdom'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[54])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[54],ram.metadata$species[54], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','United Kingdom','Denmark'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','United Kingdom','Denmark'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[55])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[55],ram.metadata$species[55], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','United Kingdom','Denmark'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','United Kingdom','Denmark'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[56])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[56],ram.metadata$species[56], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[57])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[57],ram.metadata$species[57], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[57])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[57],ram.metadata$species[57], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[58])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[58],ram.metadata$species[58], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','Iceland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','Iceland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[59])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[59],ram.metadata$species[59], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','Iceland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','Iceland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[60])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[60],ram.metadata$species[60], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','Iceland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','Iceland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[61])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[61],ram.metadata$species[61], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','Iceland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','Iceland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+stock <- readOGR(dsn = 'data/RAMstocks', layer=ram.metadata$assessid[62])
+ggplot() +
+  geom_polygon(data=stock, aes(x=long, y=lat, group=group), fill='blue', color="black") +
+  geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  coord_quickmap(ylim=c(40,65), xlim=c(-20,20)) + theme_bw() + ylab('') + xlab('') +
+  ggtitle(paste(ram.metadata$stockid[62],ram.metadata$species[62], sep=' ')) + theme_bw() +
+  geom_polygon(data=eez[eez$SOVEREIGN1 %in% c('Ireland','Iceland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x=long, y=lat, group=group), colour='black', alpha=0.5) +
+  geom_text(data = idList[idList$SOVEREIGN1 %in% c('Ireland','Iceland','United Kingdom','Denmark','France','Sweden','Norway','Belgium','Netherlands','Germany'),], aes(x = long, y = lat, label = SOVEREIGN1), 
+            size = 4, col='orange')
+
+dev.off()
