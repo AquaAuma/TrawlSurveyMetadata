@@ -3,6 +3,7 @@
 
 #0. Load package and data -----------------------
 # Load needed package
+Sys.setenv(LANG = "en")
 require(rgdal)
 require(raster)
 require(mapdata)
@@ -166,7 +167,7 @@ write.csv(tabSX, file = "figures/TabSX_CoverPerContinent.csv",
           row.names = FALSE)
 
 
-#5. Cover of fishing ground -------------------------
+#6. Cover of fishing ground -------------------------
 Fishing <- stack("data/TrawlFishing20132016_R04.tif")
 names(Fishing) <- c(2013:2016, "sum")
 #plot(Fishing[[5]])
@@ -212,3 +213,28 @@ for (i in 1:4){
 }
 dev.off()
 
+
+#7. Cover of fisheries production with Reg Watson's data --------
+library(dplyr)
+library(ggplot2)
+library(RColorBrewer)
+load('data/catch/Data_for_Aurore.Rdata')
+
+catch <- tr_avg %>%
+  group_by(Cell, LonCentre, LatCentre) %>% 
+  summarize(Total=sum(Total))
+
+catch_dem <- tr_avg %>% 
+  filter(Group == 'Dem')
+
+pal.map <- colorRampPalette(rainbow(15))
+RdBu_r <- colorRampPalette(c("#053061","#4694C4","#F6F6F6","#E7886C","#67001F"),interpolate = "spline")
+world <- map_data("world")
+
+ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=log(Total)))+
+  scale_fill_gradientn(colours = RdBu_r(10),guide = "colourbar") + theme_bw()
+
+ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="black") +
+  geom_tile(data=catch_dem, aes(x=LonCentre, y=LatCentre, fill=log(Total)))+
+  scale_fill_gradientn(colours = RdBu_r(10),guide = "colourbar") + theme_bw()
