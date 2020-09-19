@@ -167,7 +167,7 @@ write.csv(tabSX, file = "figures/TabSX_CoverPerContinent.csv",
           row.names = FALSE)
 
 
-#6. Cover of fishing ground -------------------------
+#6a. Cover of fishing ground -------------------------
 Fishing <- stack("data/TrawlFishing20132016_R04.tif")
 names(Fishing) <- c(2013:2016, "sum")
 #plot(Fishing[[5]])
@@ -214,6 +214,13 @@ for (i in 1:4){
 dev.off()
 
 
+#6b. Fishing effort without threshold -------------
+Fishing <- stack("data/TrawlFishing20132016_R04.tif")
+names(Fishing) <- c('2013','2014','2015','2016', "sum")
+
+
+
+
 #7. Check fisheries production theresholds --------
 library(dplyr)
 library(ggplot2)
@@ -224,161 +231,56 @@ pal.map <- colorRampPalette(rainbow(15))
 RdBu_r <- colorRampPalette(c("#053061","#4694C4","#F6F6F6","#E7886C","#67001F"),interpolate = "spline")
 world <- map_data("world")
 
-# for total catch
-minlim <- c(50, 100, 250, 500)
-
-# select catch data based on thresholds
+### Total catch
 catch <- tr_avg %>%
+  filter(Total>0) %>% 
   group_by(Cell, LonCentre, LatCentre) %>% 
-  summarize(Total=sum(Total)) %>% 
-  filter(Total>=minlim[1]) %>% 
-  mutate(productive=1)
-numraster <- length(catch$productive)
+  summarize(Total=sum(Total))
+
 # get overlay between catch data and metadata
 catch0 <- catch
 coordinates(catch0) <- ~ LonCentre + LatCentre   
 proj4string(catch0) <- proj4string(shape2)
-numpoly <- over(catch0, shape2)
-numpoly <- length(numpoly[!is.na(numpoly)])
+tr <- over(catch0, shape2)
 
-f1 <- ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
-  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total))+ylab('') + xlab('') +
-  scale_fill_gradientn(colours = 'indianred3') + theme_bw() + theme(legend.position = 'none') +
-  ggtitle(paste('min. 50 tonnes/year: ',round(numpoly/numraster*100),'%',sep='')) +
-  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='NA', colour='blue')
+# get ratio covered by surveys
+catch <- data.frame(catch)
+catch.surveyed <- cbind(catch, data.frame(tr)) %>% 
+  filter(!is.na(tr))
+ratio <- sum(catch.surveyed$Total)/sum(catch$Total)*100
 
-catch <- tr_avg %>%
-  group_by(Cell, LonCentre, LatCentre) %>% 
-  summarize(Total=sum(Total)) %>% 
-  filter(Total>=minlim[2]) %>% 
-  mutate(productive=1)
-numraster <- length(catch$productive)
-catch0 <- catch
-coordinates(catch0) <- ~ LonCentre + LatCentre   
-proj4string(catch0) <- proj4string(shape2)
-numpoly <- over(catch0, shape2)
-numpoly <- length(numpoly[!is.na(numpoly)])
-f2 <- ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
-  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total))+ylab('') + xlab('') +
-  scale_fill_gradientn(colours = 'indianred3') + theme_bw() + theme(legend.position = 'none') +
-  ggtitle(paste('min. 100 tonnes/year: ',round(numpoly/numraster*100),'%',sep='')) +
-  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='NA', colour='blue')
-
-catch <- tr_avg %>%
-  group_by(Cell, LonCentre, LatCentre) %>% 
-  summarize(Total=sum(Total)) %>% 
-  filter(Total>=minlim[3]) %>% 
-  mutate(productive=1)
-numraster <- length(catch$productive)
-catch0 <- catch
-coordinates(catch0) <- ~ LonCentre + LatCentre   
-proj4string(catch0) <- proj4string(shape2)
-numpoly <- over(catch0, shape2)
-numpoly <- length(numpoly[!is.na(numpoly)])
-f3 <- ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
-  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total))+ylab('') + xlab('') +
-  scale_fill_gradientn(colours = 'indianred3') + theme_bw() + theme(legend.position = 'none') +
-  ggtitle(paste('min. 250 tonnes/year: ',round(numpoly/numraster*100),'%',sep='')) +
-  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='NA', colour='blue')
-
-catch <- tr_avg %>%
-  group_by(Cell, LonCentre, LatCentre) %>% 
-  summarize(Total=sum(Total)) %>% 
-  filter(Total>=minlim[4]) %>% 
-  mutate(productive=1)
-numraster <- length(catch$productive)
-catch0 <- catch
-coordinates(catch0) <- ~ LonCentre + LatCentre   
-proj4string(catch0) <- proj4string(shape2)
-numpoly <- over(catch0, shape2)
-numpoly <- length(numpoly[!is.na(numpoly)])
-f4 <- ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
-  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total))+ylab('') + xlab('') +
-  scale_fill_gradientn(colours = 'indianred3') + theme_bw() + theme(legend.position = 'none') +
-  ggtitle(paste('min. 500 tonnes/year: ',round(numpoly/numraster*100),'%',sep='')) +
-  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='NA', colour='blue')
-
-png('figures/fisheries.prod.tresholds.png', width=1600, height = 1200, res=200)
-print(egg::ggarrange(f1, f2, f3, f4, labels=c('','','',''), nrow=2))
+png('figures/fisheries.prod.ratio.png', width=1600, height = 900, res=200)
+print(ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
+  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total)) + ylab('') + xlab('') +
+  scale_fill_distiller(palette='OrRd', trans='log', direction=1) + theme_bw() + labs(fill="tons/year") +
+  ggtitle(paste('Surveys cover ',round(ratio),'% of fisheries production',sep='')) +
+  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='blue', colour='blue', alpha=0.25))
 dev.off()
 
 
-# for demersal fishery
-minlim <- c(100, 500, 1000, 5000)
-
-# select catch data based on thresholds
+### Demersal catch
 catch <- tr_avg %>%
-  filter(Group=='Dem') %>% 
+  filter(Group=='Dem',
+         Total>0) %>% 
   group_by(Cell, LonCentre, LatCentre) %>% 
-  summarize(Total=sum(Total)) %>% 
-  filter(Total>=minlim[1]) %>% 
-  mutate(productive=1)
-numraster <- length(catch$productive)
+  summarize(Total=sum(Total))
+
 # get overlay between catch data and metadata
 catch0 <- catch
 coordinates(catch0) <- ~ LonCentre + LatCentre   
 proj4string(catch0) <- proj4string(shape2)
-numpoly <- over(catch0, shape2)
-numpoly <- length(numpoly[!is.na(numpoly)])
+tr <- over(catch0, shape2)
 
-f1 <- ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
-  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total))+ylab('') + xlab('') +
-  scale_fill_gradientn(colours = 'indianred3') + theme_bw() + theme(legend.position = 'none') +
-  ggtitle(paste('min. 100 tonnes/year: ',round(numpoly/numraster*100),'%',sep='')) +
-  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='NA', colour='blue')
+# get ratio covered by surveys
+catch <- data.frame(catch)
+catch.surveyed <- cbind(catch, data.frame(tr)) %>% 
+  filter(!is.na(tr))
+ratio <- sum(catch.surveyed$Total)/sum(catch$Total)*100
 
-catch <- tr_avg %>%
-  group_by(Cell, LonCentre, LatCentre) %>% 
-  summarize(Total=sum(Total)) %>% 
-  filter(Total>=minlim[2]) %>% 
-  mutate(productive=1)
-numraster <- length(catch$productive)
-catch0 <- catch
-coordinates(catch0) <- ~ LonCentre + LatCentre   
-proj4string(catch0) <- proj4string(shape2)
-numpoly <- over(catch0, shape2)
-numpoly <- length(numpoly[!is.na(numpoly)])
-f2 <- ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
-  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total))+ylab('') + xlab('') +
-  scale_fill_gradientn(colours = 'indianred3') + theme_bw() + theme(legend.position = 'none') +
-  ggtitle(paste('min. 500 tonnes/year: ',round(numpoly/numraster*100),'%',sep='')) +
-  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='NA', colour='blue')
-
-catch <- tr_avg %>%
-  group_by(Cell, LonCentre, LatCentre) %>% 
-  summarize(Total=sum(Total)) %>% 
-  filter(Total>=minlim[3]) %>% 
-  mutate(productive=1)
-numraster <- length(catch$productive)
-catch0 <- catch
-coordinates(catch0) <- ~ LonCentre + LatCentre   
-proj4string(catch0) <- proj4string(shape2)
-numpoly <- over(catch0, shape2)
-numpoly <- length(numpoly[!is.na(numpoly)])
-f3 <- ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
-  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total))+ylab('') + xlab('') +
-  scale_fill_gradientn(colours = 'indianred3') + theme_bw() + theme(legend.position = 'none') +
-  ggtitle(paste('min. 1000 tonnes/year: ',round(numpoly/numraster*100),'%',sep='')) +
-  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='NA', colour='blue')
-
-catch <- tr_avg %>%
-  group_by(Cell, LonCentre, LatCentre) %>% 
-  summarize(Total=sum(Total)) %>% 
-  filter(Total>=minlim[4]) %>% 
-  mutate(productive=1)
-numraster <- length(catch$productive)
-catch0 <- catch
-coordinates(catch0) <- ~ LonCentre + LatCentre   
-proj4string(catch0) <- proj4string(shape2)
-numpoly <- over(catch0, shape2)
-numpoly <- length(numpoly[!is.na(numpoly)])
-f4 <- ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
-  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total))+ylab('') + xlab('') +
-  scale_fill_gradientn(colours = 'indianred3') + theme_bw() + theme(legend.position = 'none') +
-  ggtitle(paste('min. 5000 tonnes/year: ',round(numpoly/numraster*100),'%',sep='')) +
-  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='NA', colour='blue')
-
-png('figures/fisheries.dem.prod.tresholds.png', width=1600, height = 1200, res=200)
-print(egg::ggarrange(f1, f2, f3, f4, labels=c('','','',''), nrow=2))
+png('figures/fisheries.dem.prod.ratio.png', width=1600, height = 900, res=200)
+print(ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
+  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total)) + ylab('') + xlab('') +
+  scale_fill_distiller(palette='OrRd', trans='log', direction=1) + theme_bw() + labs(fill="tons/year") +
+  ggtitle(paste('Surveys cover ',round(ratio),'% of demersal fisheries production',sep='')) +
+  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='blue', colour='blue', alpha=0.25))
 dev.off()
-
