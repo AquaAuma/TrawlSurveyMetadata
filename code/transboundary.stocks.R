@@ -69,7 +69,7 @@ names(stockList) <- c('num', 'name', 'long', 'lat')
 
 cod <- cod + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="grey20") +  
   theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank()) +
-  geom_label(data=stockList, aes(x = long, y = lat, label = num), size = 3, alpha=0.6, col='white', fill='indianred3', fontface='bold')
+  geom_label(data=stockList, aes(x = long, y = lat, label = num), size = 2.5, alpha=0.6, col='white', fill='indianred3', fontface='bold')
 
 ### Plot number of EEZs crossed by each stock
 #stockID <- stockList %>% 
@@ -80,9 +80,9 @@ cod.eez <- read_delim("data/cod.stocks.EEZs.csv", ";", escape_double = FALSE, tr
 
 bar.eez.cod <- ggplot() + geom_bar(data=cod.eez, aes(x=num, y=EEZ), stat="identity", color="indianred3", fill='indianred3', alpha=0.6) + theme_bw() +
  scale_x_continuous(breaks=c(1:21),labels=c(1:21)) + scale_y_continuous(breaks=seq(from=0, to=10, by=2), labels=seq(from=0, to=10, by=2)) +
-  ylab('Number EEZs/stock') + xlab('') +
-  theme(axis.title.y = element_text(face='bold',size=10),
-        axis.title.x = element_text(colour='blue', size=15),
+  ylab('Number EEZs/stock') + xlab('Stocks') +
+  theme(axis.title.y = element_text(size=10),
+        axis.title.x = element_text(colour='indianred3', size=10),
         axis.text.x = element_text(face='bold',color='indianred3',size=10, angle=45),
         axis.text.y = element_text(size=10, color='black'),
         panel.background = element_rect(fill = "transparent"), # bg of the panel
@@ -147,7 +147,7 @@ names(stockList) <- c('num', 'name', 'long', 'lat')
 
 merlu <- merlu + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', color="grey20") + 
   theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank()) +
-  geom_label(data=stockList, aes(x = long, y = lat, label = num), size = 3, alpha=0.6, col='white', fill='forestgreen', fontface='bold')
+  geom_label(data=stockList, aes(x = long, y = lat, label = num), size = 2.5, alpha=0.6, col='white', fill='forestgreen', fontface='bold')
 
 
 ### Plot number of EEZs crossed by each stock
@@ -158,11 +158,11 @@ merlu <- merlu + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill=
 merlu.eez <- read_delim("data/merlu.stocks.EEZs.csv", ";", escape_double = FALSE, trim_ws = TRUE)
 
 bar.eez.merlu <- ggplot() + geom_bar(data=merlu.eez, aes(x=num, y=EEZ), stat="identity", color="forestgreen", fill='forestgreen', alpha=0.6) + theme_bw() +
-  scale_x_continuous(breaks=c(1:9),labels=c(1:9)) + scale_y_continuous(breaks=seq(from=0, to=10, by=2),labels=seq(from=0, to=10, by=2)) +
+  scale_x_continuous(breaks=c(1:9),labels=c(1:9)) + scale_y_continuous(breaks=seq(from=0, to=12, by=2),labels=seq(from=0, to=12, by=2)) +
   ylab('') + xlab('Stocks') +
-  theme(axis.title.y = element_text(face='bold',size=10),
+  theme(axis.title.y = element_text(size=10),
         axis.title.x = element_text(colour='forestgreen', size=10),
-        axis.text.x = element_text(face='bold',color='forestgreen',size=10, angle=45),
+        axis.text.x = element_text(color='forestgreen',size=10, angle=45),
         axis.text.y = element_text(size=10, color='black'),
         panel.background = element_rect(fill = "transparent"), # bg of the panel
         plot.background = element_rect(fill = "transparent", color = NA),

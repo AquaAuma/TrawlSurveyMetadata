@@ -244,7 +244,7 @@ geometric.mean(cov.sum$NumberSurveys)
 #################################
 # Load EEZs shp file
 # publicly available for download there: https://www.marineregions.org/downloads.php
-eez <- readOGR(dsn = "data/eez",layer="eez_v11")
+eez <- readOGR(dsn = "data/eez",layer="eez_v11_lowres")
 
 # most 10 spp covered by survey data
 cov.sum <- left_join(cov.sum, codes, by=c('FAOspe'='ASFIS'))
@@ -271,16 +271,16 @@ for (i in 1:nrow(cov.sum)){
 
 ggeez <- ggplot(data=cov.sum, aes(x=reorder(FAOspe,-Prop), y=EEZ)) + geom_bar(stat='identity', fill='grey40') +
   theme_bw() +  theme(axis.text.x=element_text(color = "black", size=8, angle=90, vjust=0.5, hjust=0.8)) + 
-  ylab('Number of EEZs per species') + xlab('') + theme(legend.position ='') +
+  ylab('Number of EEZs/species') + xlab('') + theme(legend.position ='') +
   theme(axis.text.y=element_blank(),axis.text.x=element_text(size=20),axis.title.y=element_blank(),
-        axis.title.x=element_text(size=10)) + coord_flip() + theme(axis.text.x = element_text(angle=0),
+        axis.title.x=element_text(size=20)) + coord_flip() + theme(axis.text.x = element_text(angle=0),
                                                                    panel.grid.major = element_blank(),
                                                                    panel.grid.minor = element_blank()) +
   geom_vline(xintercept=10.5, lwd=2, lty=2) + annotate("rect", xmin = 10.5, xmax = 38, ymin = 0, ymax = 32,alpha = .25) + 
-  scale_y_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) #+
   # add colors for spp detailed in the figure after
-  geom_bar(data=cov.sum[cov.sum$Species=='Gadus morhua',], stat='identity', fill='grey40', color='indianred3', size=1.5) +
-  geom_bar(data=cov.sum[cov.sum$Species=='Merluccius merluccius',], stat='identity', fill='grey40', color='forestgreen',size=1.5)
+  #geom_bar(data=cov.sum[cov.sum$Species=='Gadus morhua',], stat='identity', fill='grey40', color='indianred3', size=1.5) +
+  #geom_bar(data=cov.sum[cov.sum$Species=='Merluccius merluccius',], stat='identity', fill='grey40', color='forestgreen',size=1.5)
 
 png(file='figures/figure2.09.2020.png', height=800, width=1200)
 print(egg::ggarrange(gghabitat, ggnbr, ggeez, labels=c('','',''), nrow=1, ncol=3))
