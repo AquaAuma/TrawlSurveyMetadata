@@ -388,6 +388,7 @@ plot(shapeSview, col=oaS, border=NA, add=TRUE)
 
 dev.off()
 
+
 # Figure 5 : Density plot -----------------------
 load("data/vast/Arrowtooth_2020-03-18.RData")
 
