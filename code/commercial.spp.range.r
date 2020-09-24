@@ -7,6 +7,7 @@ library(tidyverse)
 library(reshape2)
 library(egg)
 library(psych)
+library(dplyr)
 
 ###########################
 #### 1. Load Aquamaps
@@ -32,7 +33,7 @@ for (i in 1:length(fao.zone)){
     proj4string(dato) <- proj4string(fao)
     aqua.fao <- over(dato, fao)
     aqua.fao <- aqua.fao %>% 
-      select(F_AREA)
+      dplyr::select(F_AREA)
     file1 <- cbind(file1, aqua.fao)  
     #file1 <- file1 %>% 
     #  filter(F_AREA==fao.zone[i])
@@ -51,8 +52,8 @@ dat.fao$Species <- substr(dat.fao$Species, start=1, stop=nchar(dat.fao$Species)-
 
 # Minimum probability:0.1
 dat.fao <- dat.fao %>% 
-  select(-square, -Genus, -F_AREA) %>% 
-  filter(probability>=0.9)
+  dplyr::select(-square, -Genus, -F_AREA) %>% 
+  filter(probability>=0.5)
 
 # Group species which are present on several FAO areas
 spp.multiple <- c('Gadus morhua','Melanogrammus aeglefinus','Mugil cephalus','Trichiurus lepturus','Thyrsites atun',
@@ -73,7 +74,7 @@ for (i in 1:length(spp.multiple)){
 # Add species code ASFIS 3 letters
 codes <- read.csv("data/ASFIS_sp_2019.txt")
 codes <- codes %>% 
-  select(X3A_CODE,Scientific_name) %>% 
+  dplyr::select(X3A_CODE,Scientific_name) %>% 
   rename(ASFIS=X3A_CODE,
          Species=Scientific_name)
 
@@ -104,7 +105,7 @@ colOA <- list("Publicly available" = "blue",
 
 dat <- dat %>%
   mutate(Spe.FAO = paste(Species, FAO, sep=' ')) %>% 
-  select(-link, -email, -Contact, -Providr, -minLat, -maxLat, -minLong, -maxLong, -minYear, -maxYear, -maxDpth, -minDpth)
+  dplyr::select(-link, -email, -Contact, -Providr, -minLat, -maxLat, -minLong, -maxLong, -minYear, -maxYear, -maxDpth, -minDpth)
 
 
 # plot all species range overlap with convex hull
@@ -164,7 +165,7 @@ names(cov.nboa) <- c('Available upon request','Incomplete metadata','Not publicl
 cov.nboa$FAOspe <- row.names(cov.nboa)
 row.names(cov.nboa) <- NULL
 cov.nboa <- cov.nboa %>% 
-    select(-'NA') %>% 
+    dplyr::select(-'NA') %>% 
     gather("OA", "NumberSurveys", -FAOspe)
 cov.nboa$NumberSurveys <- as.numeric(as.vector(cov.nboa$NumberSurveys))
 
@@ -190,7 +191,7 @@ cov.spe <- cov.spe %>%
 cov <- left_join(cov.spe, cov.nboa, by=c('FAOspe','OA'))
 
 sorting <- cov %>%
-  group_by(FAOspe) %>% 
+  dplyr::group_by(FAOspe) %>% 
   summarize(Prop = sum(Prop))
 sorting <- sorting[order(sorting$Prop),]
 
@@ -216,17 +217,12 @@ gghabitat <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=Prop, fill=OA)) + geom_
                                  values=c('purple','black','red','orange','blue')) +
   theme(axis.text.x=element_text(color = "black", size=12, angle=90, vjust=0.5, hjust=0.8)) + 
   ylab('Proportion of habitat covered') + xlab('')  +
-  theme(legend.position = c(0.30,0.90)) + theme(axis.text.y=element_text(size=20),axis.text.x=element_text(size=20),
+  theme(legend.position = c(0.50,0.90)) + theme(axis.text.y=element_text(size=20),axis.text.x=element_text(size=20),
                                                axis.title=element_text(size=20), legend.text = element_text(size=20),
                                                panel.grid.major = element_blank(),
                                                panel.grid.minor = element_blank()) + 
   labs(fill='') + coord_flip() + theme(axis.text.x = element_text(angle=0)) +
   geom_hline(yintercept=0.5, lwd=2, lty=2) + scale_y_continuous(expand = c(0, 0))
-
-
-png(file='figures/figure2.png', height=800, width=1200)
-print(egg::ggarrange(gghabitat, ggnbr, labels=c('',''), nrow=1, ncol=2))
-dev.off()
 
 # stats for paper
 max(sorting$Prop)
@@ -243,8 +239,56 @@ median(cov.sum$NumberSurveys)
 geometric.mean(cov.sum$NumberSurveys)
 
 
+#################################
+# 5. Transboundary species ranges
+#################################
+# Load EEZs shp file
+# publicly available for download there: https://www.marineregions.org/downloads.php
+eez <- readOGR(dsn = "data/eez",layer="eez_v11_lowres")
+
+# most 10 spp covered by survey data
+cov.sum <- left_join(cov.sum, codes, by=c('FAOspe'='ASFIS'))
+
+# get aquamaps data for those spp
+dat <- dat %>% 
+  dplyr::select(Species, ASFIS, lat, long, probability) %>% 
+  filter(Species %in% cov.sum$Species)
+
+# overlay with eez shapefile
+cov.sum$EEZ <- NA
+
+for (i in 1:nrow(cov.sum)){
+  print(cov.sum$FAOspe[i])
+  sub.dat <- subset(dat, Species==cov.sum$Species[i])
+  xx <- sub.dat
+  coordinates(xx) <- ~ long + lat
+  proj4string(xx) <- proj4string(eez)
+  tr <- over(xx, eez)
+  tr <- tr %>% 
+    filter(!is.na(GEONAME))
+  cov.sum$EEZ[i] <- length(unique(tr$GEONAME))
+}
+
+ggeez <- ggplot(data=cov.sum, aes(x=reorder(FAOspe,-Prop), y=EEZ)) + geom_bar(stat='identity', fill='grey40') +
+  theme_bw() +  theme(axis.text.x=element_text(color = "black", size=8, angle=90, vjust=0.5, hjust=0.8)) + 
+  ylab('Number of EEZs/species') + xlab('') + theme(legend.position ='') +
+  theme(axis.text.y=element_blank(),axis.text.x=element_text(size=20),axis.title.y=element_blank(),
+        axis.title.x=element_text(size=20)) + coord_flip() + theme(axis.text.x = element_text(angle=0),
+                                                                   panel.grid.major = element_blank(),
+                                                                   panel.grid.minor = element_blank()) +
+  geom_vline(xintercept=10.5, lwd=2, lty=2) + annotate("rect", xmin = 10.5, xmax = 38, ymin = 0, ymax = 32,alpha = .25) + 
+  scale_y_continuous(expand = c(0, 0)) #+
+  # add colors for spp detailed in the figure after
+  #geom_bar(data=cov.sum[cov.sum$Species=='Gadus morhua',], stat='identity', fill='grey40', color='indianred3', size=1.5) +
+  #geom_bar(data=cov.sum[cov.sum$Species=='Merluccius merluccius',], stat='identity', fill='grey40', color='forestgreen',size=1.5)
+
+png(file='figures/figure2.09.2020.png', height=800, width=1200)
+print(egg::ggarrange(gghabitat, ggnbr, ggeez, labels=c('','',''), nrow=1, ncol=3))
+dev.off()
+
+
 #########################
-# 5. For other thresholds
+# 6. For other thresholds
 #########################
 ggnbr <- ggplot(cov, aes(x=reorder(FAOspe, -Prop), y=NumberSurveys, fill=OA)) + geom_bar(stat="identity", color="black") +
   theme_bw() + scale_fill_manual(values=c('purple','black','red','orange','blue')) +
@@ -288,4 +332,5 @@ max(cov.sum$NumberSurveys)
 mean(cov.sum$NumberSurveys)
 median(cov.sum$NumberSurveys)
 geometric.mean(cov.sum$NumberSurveys)
+
 

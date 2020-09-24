@@ -3,6 +3,7 @@
 
 #0. Load package and data -----------------------
 # Load needed package
+Sys.setenv(LANG = "en")
 require(rgdal)
 require(raster)
 require(mapdata)
@@ -166,7 +167,7 @@ write.csv(tabSX, file = "figures/TabSX_CoverPerContinent.csv",
           row.names = FALSE)
 
 
-#5. Cover of fishing ground -------------------------
+#6a. Cover of fishing ground -------------------------
 Fishing <- stack("data/TrawlFishing20132016_R04.tif")
 names(Fishing) <- c(2013:2016, "sum")
 #plot(Fishing[[5]])
@@ -212,3 +213,74 @@ for (i in 1:4){
 }
 dev.off()
 
+
+#6b. Fishing effort without threshold -------------
+Fishing <- stack("data/TrawlFishing20132016_R04.tif")
+names(Fishing) <- c('2013','2014','2015','2016', "sum")
+
+
+
+
+#7. Check fisheries production theresholds --------
+library(dplyr)
+library(ggplot2)
+library(RColorBrewer)
+library(egg)
+load('data/catch/Data_for_Aurore.Rdata')
+pal.map <- colorRampPalette(rainbow(15))
+RdBu_r <- colorRampPalette(c("#053061","#4694C4","#F6F6F6","#E7886C","#67001F"),interpolate = "spline")
+world <- map_data("world")
+
+### Total catch
+catch <- tr_avg %>%
+  filter(Total>0) %>% 
+  group_by(Cell, LonCentre, LatCentre) %>% 
+  summarize(Total=sum(Total))
+
+# get overlay between catch data and metadata
+catch0 <- catch
+coordinates(catch0) <- ~ LonCentre + LatCentre   
+proj4string(catch0) <- proj4string(shape2)
+tr <- over(catch0, shape2)
+
+# get ratio covered by surveys
+catch <- data.frame(catch)
+catch.surveyed <- cbind(catch, data.frame(tr)) %>% 
+  filter(!is.na(tr))
+ratio <- sum(catch.surveyed$Total)/sum(catch$Total)*100
+
+png('figures/fisheries.prod.ratio.png', width=1600, height = 900, res=200)
+print(ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
+  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total)) + ylab('') + xlab('') +
+  scale_fill_distiller(palette='OrRd', trans='log', direction=1) + theme_bw() + labs(fill="tons/year") +
+  ggtitle(paste('Surveys cover ',round(ratio),'% of fisheries production',sep='')) +
+  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='blue', colour='blue', alpha=0.25))
+dev.off()
+
+
+### Demersal catch
+catch <- tr_avg %>%
+  filter(Group=='Dem',
+         Total>0) %>% 
+  group_by(Cell, LonCentre, LatCentre) %>% 
+  summarize(Total=sum(Total))
+
+# get overlay between catch data and metadata
+catch0 <- catch
+coordinates(catch0) <- ~ LonCentre + LatCentre   
+proj4string(catch0) <- proj4string(shape2)
+tr <- over(catch0, shape2)
+
+# get ratio covered by surveys
+catch <- data.frame(catch)
+catch.surveyed <- cbind(catch, data.frame(tr)) %>% 
+  filter(!is.na(tr))
+ratio <- sum(catch.surveyed$Total)/sum(catch$Total)*100
+
+png('figures/fisheries.dem.prod.ratio.png', width=1600, height = 900, res=200)
+print(ggplot() + geom_polygon(data=world, aes(x=long, y=lat, group=group), fill='black', colour='black') +
+  geom_tile(data=catch, aes(x=LonCentre, y=LatCentre, fill=Total)) + ylab('') + xlab('') +
+  scale_fill_distiller(palette='OrRd', trans='log', direction=1) + theme_bw() + labs(fill="tons/year") +
+  ggtitle(paste('Surveys cover ',round(ratio),'% of demersal fisheries production',sep='')) +
+  geom_polygon(data=shape2, aes(x=long, y=lat, group=group), fill='blue', colour='blue', alpha=0.25))
+dev.off()
