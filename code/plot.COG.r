@@ -7,8 +7,8 @@ library(tidyverse)
 library(ggrepel)
 
 # Load data
-setwd('~/PhD DTU Aqua/(vii) BTS paper/COG')
-cog <- read_csv("cog.csv", quote = "\\\"")
+#setwd('~/PhD DTU Aqua/(vii) BTS paper/COG')
+cog <- read_csv("data/vast/cog.csv", quote = "\\\"")
 names(cog) <- c('m','Year','cog','se')
 
 cog <- cbind(subset(cog, m==1),subset(cog, m==2))
@@ -41,3 +41,4 @@ ggplot(cog, aes(x=longc, y=latc, colour=year)) + geom_path(lwd=3) +
   theme(axis.text = element_blank(),
         axis.title = element_text(size=14))+
   geom_vline(xintercept=0, lwd=1.25) + geom_hline(yintercept=0, lwd=1.25)
+

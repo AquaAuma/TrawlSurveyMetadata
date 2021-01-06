@@ -3,7 +3,7 @@
 
 #0. Load package and data -----------------------
 # Load needed package
-Sys.setenv(LANG = "en")
+#Sys.setenv(LANG = "en")
 require(rgdal)
 require(raster)
 require(mapdata)
