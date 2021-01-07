@@ -7,7 +7,6 @@ library(tidyverse)
 library(ggrepel)
 
 # Load data
-#setwd('~/PhD DTU Aqua/(vii) BTS paper/COG')
 cog <- read_csv("data/vast/cog.csv", quote = "\\\"")
 names(cog) <- c('m','Year','cog','se')
 

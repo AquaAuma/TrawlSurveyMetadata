@@ -17,19 +17,17 @@ The code is organized in 6 scripts:
 
 - statBathyEEZ.r: compute statistics of coverage for Supplementary 3: Productive and fished areas covered by surveys
 
-- plot.COG.r: use center of gravity for cod
+- plot.COG.r: use center of gravity for cod for insert in Figure 3c.
 
   
 
 We try to keep the metadata information on bottom trawl survey updated in the repository `update`. If you see wrong or incomplete information, please report a new issue. 
 
-The last update of the metadata (similar to table is available here: [update/metatext_last.csv](https://raw.githubusercontent.com/AquaAuma/TrawlSurveyMetadata/master/update/metatext_last.csv)
+The last update of the metadata (similar to table in Supplementary 1) is available here: [update/Metadata_last.csv](https://raw.githubusercontent.com/AquaAuma/TrawlSurveyMetadata/master/update/Metadata_last.csv)
 
 The updated extent of the surveys can be visualize interactively: https://rfrelat.shinyapps.io/metabts/
 
 
-
-Last update: 6 January 2021.
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
