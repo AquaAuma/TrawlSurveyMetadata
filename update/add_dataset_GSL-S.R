@@ -1,8 +1,6 @@
 # Script to add a new dataset in the the metadata
 # compute the convex hull and merge with existing information
 
-# script to be updated on any given dataset
-
 library(raster); library(rgdal)
 library(alphahull) #for ahull
 library(maps); library(mapdata)
@@ -31,6 +29,9 @@ if (TRUE){
 } else {
   gebco <- NULL
 }
+
+# Get the date
+today <- format(Sys.Date(), format="%d%m%Y")
 
 # 1. Load dataset with haul coordinates ------------
 # can be in local directory
@@ -159,7 +160,7 @@ newsurvey <- data.frame(
   "Div_sps"=info$Div_sps,
   "Length"=info$Length,
   "Continent"=info$Continent,
-  "First.year"=info$First_year,
+  "First_year"=info$First_year,
   "Area"=info$Area      
 )
 row.names(newsurvey) <- newsurvey$Survey
@@ -181,12 +182,11 @@ updatedshp <- bind(shp, newshp)
 newmeta <- as.data.frame(c(newsurvey, stpyr))
 updatedmeta <- rbind(meta, newmeta)
 
-#make sure the metadata is in the same order than the shapefile
-ordmeta <- match(updatedshp$Survey, updatedmeta$Survey)
-
+# order per continent and survey
+ord<-order(updatedmeta$Continent, updatedmeta$Survey)
+updatedmeta <- updatedmeta[ord,]
 
 #4. Save the shapefile and metadata -------------
-
 # Save the updated version with today's suffix
 filetoday <- paste0("Metadata_", today)
 writeOGR(updatedshp, dsn = paste0("update/", filetoday, ".shp"),

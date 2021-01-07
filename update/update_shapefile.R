@@ -4,6 +4,7 @@
 
 
 # 1. Load file ------------------------
+source("update/Tools.R")
 
 # 1a. csv file Metadata_last.csv
 # test if ',' is separating
@@ -13,29 +14,6 @@ if(ncol(meta)==1){ # or ';'
 }
 
 #Replace if any ',' or ';' by '-'
-rmcoma <- function(txt){
-  t1 <- gsub(",", "-", txt)
-  t2 <- gsub(";", "-", t1)
-  t3 <- gsub("\\n", " ", t2)
-  t4 <- rmempty(t3)
-  return(t4)
-}
-rmempty <- function(txt){
-  #before
-  t1 <- gsub("^ ", "", txt)
-  while (any(t1!=txt, na.rm = TRUE)){
-    txt <- t1
-    t1 <- gsub("^ ", "", txt)
-  }
-  #after
-  t1 <- gsub(" $", "", txt)
-  while (any(t1!=txt, na.rm = TRUE)){
-    txt <- t1
-    t1 <- gsub(" $", "", txt)
-  }
-  return(txt)
-}
-
 meta <- as.data.frame(apply(meta, 2, rmcoma))
 
 # 1b. shapefile Metadata_last.shp
